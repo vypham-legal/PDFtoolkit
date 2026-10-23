@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PDF Toolkit — Internal</title>
+<!-- Tab icon. Inlined as a data URI on purpose: the page already depends on lib/ being
+     uploaded with it, and an extra icon.png would be one more file to forget on deploy.
+     64x64 PNG, ~4 KB. The source artwork had its transparency baked in as a grey
+     checkerboard, so that was flood-filled away before scaling. -->
+<link rel="icon" type="image/png" href="data:image/png;base64,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" />
+<link rel="apple-touch-icon" href="data:image/png;base64,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" />
+<meta name="theme-color" content="#2a3444" />
+<style>
+  :root{
+    --nav:#2a3444; --nav-header:#212a38; --nav-active:#3a4a63; --nav-hover:#333e50;
+    --nav-text:#c9d2df; --nav-label:#7e8ca3; --accent:#2563eb;
+    --gold:#d9a520;   /* active-item marker in the sidebar */
+    --bg:#f1f3f6; --surface:#ffffff; --border:#e2e7ee; --border-in:#d5dbe4;
+    --heading:#1f2a37; --text:#374151; --muted:#6b7686;
+    --primary:#2a3444; --primary-h:#1f2836;
+    --ok:#0f9d6b; --danger:#d64550;
+    --radius:8px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:14.5px;line-height:1.55}
+  a{color:var(--accent);text-decoration:none}
+
+  .sidebar{position:fixed;top:0;left:0;bottom:0;width:240px;background:var(--nav);
+    color:var(--nav-text);display:flex;flex-direction:column;overflow-y:auto}
+  .sidebar .head{background:var(--nav-header);padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .sidebar .head .t{color:#fff;font-weight:700;font-size:19px;line-height:1.35;letter-spacing:.01em}
+  .sidebar .head .s{color:var(--nav-label);font-size:12px;margin-top:4px}
+  .langsw{display:flex;margin-top:12px;border:1px solid rgba(255,255,255,.16);border-radius:6px;overflow:hidden;width:max-content}
+  .langsw button{border:0;background:none;color:var(--nav-label);padding:4px 12px;font:inherit;font-size:12px;cursor:pointer}
+  .langsw button.on{background:var(--accent);color:#fff}
+  .grp{padding:16px 20px 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--nav-label)}
+  .navitem{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;color:var(--nav-text);
+    border-left:3px solid transparent;font-size:14px}
+  .navitem:hover{background:var(--nav-hover)}
+  .navitem.active{background:var(--nav-active);color:#fff;border-left-color:var(--gold)}
+  .sidebar .foot{margin-top:auto;padding:14px 20px;font-size:12px;color:var(--nav-label);
+    border-top:1px solid rgba(255,255,255,.06);line-height:1.5}
+
+  .main{margin-left:240px;min-height:100vh}
+  .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:18px 30px;
+    display:flex;align-items:center;gap:16px;justify-content:space-between}
+  .topbar .tb-title{min-width:0}
+  .topbar h1{margin:0;font-size:19px;color:var(--heading);font-weight:700}
+  .topbar .crumb{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .content{padding:26px 30px 70px}
+
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:22px 24px;margin-bottom:20px}
+  .panel > .lead{color:var(--muted);margin:0 0 18px;font-size:13.5px}
+  .subhead{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
+    font-weight:700;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+
+  .field{margin:0 0 15px}
+  label{display:block;font-weight:600;margin:0 0 6px;font-size:13.5px;color:var(--heading)}
+  .hint{color:var(--muted);font-size:12.5px;margin:5px 0 0}
+  /* an empty placeholder must not take up space, or the two Convert columns end up
+     with their buttons at different heights */
+  .hint:empty{margin:0}
+  input[type=text],select{width:100%;padding:9px 11px;border:1px solid var(--border-in);
+    border-radius:6px;font:inherit;background:#fff;color:var(--text)}
+  input[type=text]:focus,select:focus{outline:2px solid #dbe4fb;border-color:var(--accent)}
+
+  /* Fixed minimum height so a one-line drop zone matches a two-line one; the flex
+     centring keeps either content set in the middle. Line breaks come from the flex
+     column, not <br>, so the items stack without an extra empty line box. */
+  .drop{border:1.5px dashed var(--border-in);border-radius:6px;padding:24px;text-align:center;
+    color:var(--muted);background:#fafbfc;cursor:pointer;transition:.15s;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    min-height:100px}
+  .drop.hover{border-color:var(--accent);background:#f2f6ff}
+  .drop b{color:var(--heading)}
+
+  ul.filelist{list-style:none;margin:12px 0 0;padding:0}
+  ul.filelist:empty{margin:0}
+  ul.filelist li{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#fff;
+    border:1px solid var(--border);border-radius:6px;margin-bottom:6px;font-size:13.5px}
+  ul.filelist li .grab{cursor:grab;color:var(--muted)}
+  ul.filelist li .name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  ul.filelist li .x{border:0;background:none;color:var(--danger);cursor:pointer;font-size:15px}
+  ul.filelist li .pno{color:var(--muted);font-size:12.5px}
+  ul.filelist li.dragging{opacity:.5}
+  .idx{color:var(--muted);width:20px;text-align:right}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:6px;background:var(--primary);
+    color:#fff;padding:10px 18px;font:inherit;font-weight:600;font-size:13.5px;cursor:pointer}
+  .btn:hover{background:var(--primary-h)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.ghost{background:#fff;color:var(--heading);border:1px solid var(--border-in)}
+  .btn.ghost:hover{background:#f2f6ff;border-color:var(--accent)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+
+  .result{margin-top:18px;padding:14px 16px;border:1px solid var(--border);border-left:3px solid var(--ok);
+    border-radius:6px;background:#fbfefc;display:none}
+  .result.show{display:block}
+  .result.error{border-left-color:var(--danger);background:#fdf6f6}
+  .result h3{margin:0 0 5px;font-size:14px;color:var(--heading)}
+  .result .meta{color:var(--muted);font-size:12.8px;white-space:pre-wrap}
+  /* editable output filename shown next to every Download button */
+  .result .dlname{width:auto;flex:1;min-width:170px;max-width:340px;padding:8px 11px;
+    border:1px solid var(--border-in);border-radius:6px;font:inherit;font-size:13.5px;background:#fff}
+  .result .dlname:focus{outline:2px solid #dbe4fb;border-color:var(--accent)}
+  /* inline rename of a loaded file in the Files view */
+  ul.filelist li .ren{border:0;background:none;cursor:pointer;color:var(--muted);
+    font-size:13px;padding:2px 5px;border-radius:4px;line-height:1}
+  ul.filelist li .ren:hover{background:#eef3fd;color:var(--accent)}
+  ul.filelist li input.rename{flex:1;min-width:0;padding:5px 8px;border:1px solid var(--accent);
+    border-radius:5px;font:inherit;font-size:13.5px}
+  .spin{display:inline-block;width:13px;height:13px;border:2px solid #fff;border-top-color:transparent;
+    border-radius:50%;animation:sp .7s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+
+  .split2{display:grid;grid-template-columns:1fr;gap:20px}
+
+  /* ---- stacked "group" card: Files view and Groups view ---- */
+  .gwrap{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 6px}
+  .gcard{position:relative;width:212px;padding:14px 12px 16px;border:1px solid transparent;
+    border-radius:10px;background:#fff;cursor:grab;user-select:none;
+    display:flex;flex-direction:column;align-items:center;gap:10px;transition:.15s}
+  .gcard:hover{border-color:#c3d6f7;background:#f7faff;box-shadow:0 2px 10px rgba(37,99,235,.10)}
+  .gcard.dragging{opacity:.35}
+  .gcard .stack{width:100%;height:158px;display:flex;align-items:flex-end;justify-content:center}
+  /* the offset sheets behind the page are pure CSS, shown only when count > 1 */
+  .gcard .sheets{position:relative;display:inline-block;line-height:0;max-width:100%}
+  .gcard .sheets img{position:relative;z-index:3;display:block;max-width:100%;max-height:150px;
+    background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.26)}
+  .gcard .sheets.multi::before,.gcard .sheets.multi::after{content:"";position:absolute;inset:0;
+    background:#fff;border:1px solid #e2e7ee;border-radius:2px}
+  .gcard .sheets.multi::before{transform:translate(7px,-7px);z-index:1}
+  .gcard .sheets.multi::after{transform:translate(3.5px,-3.5px);z-index:2}
+  .gcard .sheets .ph{display:inline-block;width:16px;height:16px;border:2px solid var(--border-in);
+    border-top-color:var(--accent);border-radius:50%;animation:sp .8s linear infinite}
+  .gcard .thumbfail{font-size:11.5px;color:var(--muted);line-height:1.4;display:inline-block;padding:0 6px}
+  .gcard .count{color:var(--muted);font-size:13px;line-height:1}
+  .gcard .bar{position:absolute;top:8px;right:8px;display:none;background:#fff;
+    border:1px solid var(--border-in);border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.14);
+    overflow:hidden;z-index:4}
+  .gcard:hover .bar{display:flex}
+  .gcard .bar button{border:0;background:none;cursor:pointer;color:var(--heading);
+    padding:6px 8px;display:flex;align-items:center;line-height:0;font-size:13px}
+  .gcard .bar button + button{border-left:1px solid var(--border)}
+  .gcard .bar button:hover{background:#eef3fd;color:var(--accent)}
+  .gcard .bar button.danger:hover{background:#fdeaec;color:var(--danger)}
+  .gcard .bar svg{width:16px;height:16px}
+  .gcard input.rename{width:100%;padding:5px 8px;border:1px solid var(--accent);
+    border-radius:5px;font:inherit;font-size:13px;text-align:center}
+  /* ---- multi-select of page tiles ---- */
+  .pgrid{position:relative}                      /* anchor for the drag rectangle */
+  .pgrid.marqueeing{user-select:none}
+  .pcard.sel{border-color:var(--accent);background:#eef4ff;
+    box-shadow:0 0 0 1px var(--accent) inset,0 2px 10px rgba(37,99,235,.16)}
+  .pcard.sel .pno{color:var(--accent);font-weight:700}
+  .pcard .tick{position:absolute;top:10px;left:10px;width:17px;height:17px;border-radius:50%;
+    background:var(--accent);color:#fff;display:none;align-items:center;justify-content:center;
+    font-size:11px;line-height:1;z-index:3}
+  .pcard.sel .tick{display:flex}
+  .marquee{position:absolute;border:1px solid var(--accent);background:rgba(37,99,235,.12);
+    pointer-events:none;z-index:5;border-radius:2px}
+  .selbar{display:none;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0 2px;
+    padding:9px 13px;background:#eef4ff;border:1px solid #c3d6f7;border-radius:8px}
+  .selbar .n{font-weight:600;color:var(--heading);font-size:13.5px}
+  .btn.sm{padding:6px 12px;font-size:13px}
+  /* ---- Files / Pages segmented toggle ---- */
+  .viewsw{display:inline-flex;border:1px solid var(--border-in);border-radius:7px;overflow:hidden;
+    background:#fff;margin-bottom:16px}
+  .viewsw button{display:flex;align-items:center;gap:7px;border:0;background:none;font:inherit;
+    font-size:13.5px;font-weight:600;color:var(--muted);padding:8px 15px;cursor:pointer}
+  .viewsw button + button{border-left:1px solid var(--border-in)}
+  .viewsw button.on{background:#eef3fd;color:var(--accent)}
+  .viewsw button svg{width:16px;height:16px;flex:none}
+
+  /* ---- Pages workspace: page cards with cut gaps between them ---- */
+  .pgrid{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:4px 0 6px}
+  .pcard{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;
+    width:190px;padding:12px 10px 14px;border:1px solid transparent;border-radius:10px;
+    background:#fff;cursor:grab;user-select:none;transition:.15s}
+  .pcard:hover{border-color:#c3d6f7;background:#f7faff;box-shadow:0 2px 10px rgba(37,99,235,.10)}
+  .pcard.dragging{opacity:.35}
+  .pcard .sheet{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+  .pcard .sheet img{max-width:100%;max-height:100%;display:block;background:#fff;
+    box-shadow:0 1px 4px rgba(0,0,0,.24);transition:transform .2s ease}
+  .pcard .sheet .ph{width:16px;height:16px;border:2px solid var(--border-in);
+    border-top-color:var(--accent);border-radius:50%;animation:sp .8s linear infinite}
+  .pcard .fname{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    background:#fbf0cd;color:#8a6708;border:1px solid #f0dfa4;border-radius:5px;padding:3px 10px;font-size:13px}
+  .pcard .pno{color:var(--muted);font-size:13px;line-height:1}
+  /* hover toolbar */
+  .pcard .bar{position:absolute;top:8px;left:50%;transform:translateX(-50%);display:none;
+    background:#fff;border:1px solid var(--border-in);border-radius:8px;
+    box-shadow:0 2px 10px rgba(0,0,0,.14);overflow:hidden;z-index:2}
+  .pcard:hover .bar{display:flex}
+  .pcard .bar button{border:0;background:none;cursor:pointer;color:var(--heading);
+    padding:7px 9px;display:flex;align-items:center;line-height:0}
+  .pcard .bar button + button{border-left:1px solid var(--border)}
+  .pcard .bar button:hover:not(:disabled){background:#eef3fd;color:var(--accent)}
+  .pcard .bar button:disabled{opacity:.32;cursor:not-allowed}
+  .pcard .bar button.danger:hover:not(:disabled){background:#fdeaec;color:var(--danger)}
+  .pcard .bar svg{width:17px;height:17px}
+  .pcard .rotbadge{position:absolute;top:10px;left:12px;background:var(--accent);color:#fff;
+    font-size:10.5px;font-weight:600;padding:1px 5px;border-radius:3px;z-index:1}
+  .pcard.del{cursor:default;border-style:dashed;border-color:var(--border-in)}
+  .pcard.del .sheet{opacity:.25}
+  .pcard.del .fname{background:#eceff3;color:var(--muted);border-color:var(--border);text-decoration:line-through}
+  .pcard.del .rotbadge{display:none}
+
+  /* scissors gap between two pages */
+  .cutgap{position:relative;flex:none;width:44px;align-self:stretch;border:0;background:none;
+    padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .cutgap::before{content:"";position:absolute;top:14px;bottom:14px;left:50%;width:0;
+    border-left:1.5px dashed #b9c6da}
+  .cutgap .sc{position:relative;width:28px;height:28px;border-radius:50%;background:#e3ecfb;
+    color:var(--accent);display:flex;align-items:center;justify-content:center;opacity:.45;transition:.15s}
+  .cutgap:hover .sc{opacity:1;background:var(--accent);color:#fff}
+  .cutgap .sc svg{width:15px;height:15px}
+  .cutgap.on::before{border-left:2px solid var(--danger)}
+  .cutgap.on .sc{opacity:1;background:var(--danger);color:#fff}
+
+  /* ---- page preview modal ---- */
+  .modal{position:fixed;inset:0;background:rgba(20,26,36,.62);display:none;
+    align-items:center;justify-content:center;padding:28px;z-index:50}
+  .modal.show{display:flex}
+  .modal .box{background:#fff;border-radius:10px;padding:16px;max-width:min(92vw,900px);
+    max-height:92vh;display:flex;flex-direction:column;gap:12px}
+  .modal .box .hd{display:flex;align-items:center;gap:14px}
+  .modal .box .hd .t{flex:1;font-weight:600;color:var(--heading);font-size:14px}
+  .modal .box .hd button{border:0;background:none;cursor:pointer;color:var(--muted);font-size:19px;line-height:1}
+  .modal .box .cv{overflow:auto;display:flex;align-items:center;justify-content:center;background:#f5f6f8;border-radius:6px}
+  .modal .box canvas{max-width:100%;max-height:76vh;display:block}
+
+  /* ---- OCR: progress bar + inline checkbox ---- */
+  .prog{display:none;height:7px;background:#e6eaf1;border-radius:4px;overflow:hidden;margin:14px 0 8px}
+  .prog.on{display:block}
+  .prog .bar{height:100%;width:0;background:var(--accent);border-radius:4px;transition:width .2s linear}
+  .chk{display:flex;align-items:center;gap:9px;font-weight:400;font-size:13.5px;
+    color:var(--text);margin:4px 0 2px;cursor:pointer}
+  .chk input{width:15px;height:15px;accent-color:var(--accent);cursor:pointer}
+  @media(min-width:700px){ .split2{grid-template-columns:1fr 1fr} }
+
+  @media(max-width:760px){
+    .sidebar{position:static;width:auto;flex-direction:row;flex-wrap:wrap;overflow:visible}
+    .sidebar .head{width:100%}
+    .grp,.sidebar .foot{display:none}
+    .navitem{border-left:0;border-bottom:3px solid transparent;padding:12px 14px}
+    .navitem.active{border-left:0;border-bottom-color:var(--gold)}
+    .main{margin-left:0}
+    .content{padding:20px 16px 60px}
+    .topbar{padding:16px;flex-wrap:wrap}
+  }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="head">
+    <div class="t" data-i18n="brand">PDF Toolkit</div>
+    <div class="s" data-i18n="brandSub">Internal documents</div>
+    <div class="langsw">
+      <button id="langEn" class="on" onclick="setLang('en')">EN</button>
+      <button id="langVi" onclick="setLang('vi')">VI</button>
+    </div>
+  </div>
+  <div class="grp" data-i18n="navGroup">Functions</div>
+  <div class="navitem active" data-tab="merge">Merge</div>
+  <div class="navitem" data-tab="split">Split</div>
+  <div class="navitem" data-tab="organize">Organize pages</div>
+  <div class="navitem" data-tab="convert">Convert format</div>
+  <div class="navitem" data-tab="ocr">OCR</div>
+  <div class="navitem" data-tab="compress">Compress</div>
+  <div class="foot" id="privacyNote"></div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title">
+      <h1 id="pageTitle"></h1>
+      <div class="crumb" id="pageCrumb"></div>
+    </div>
+    <button class="btn ghost" id="resetBtn" data-i18n="resetBtn" title=""></button>
+  </div>
+  <div class="content">
+  <section class="panel-group" id="merge">
+    <div class="panel">
+      <p class="lead" data-i18n="mergeLead"></p>
+      <div class="drop" id="mergeDrop"><b data-i18n="dropPdfsB">Drop PDFs here</b><span data-i18n="dropOrClick">or click to choose</span></div>
+      <input type="file" id="mergeInput" accept="application/pdf" multiple hidden>
+      <div class="viewsw" id="mergeViewSw" style="display:none;margin-top:16px"></div>
+      <div class="gwrap" id="mergeList"></div>
+      <div class="pgrid" id="mergePages" style="display:none"></div>
+      <p class="hint" id="mergeStatus"></p>
+      <div class="row">
+        <input type="text" id="mergeName" data-i18n-ph="mergeNamePh" style="max-width:280px">
+        <button class="btn" id="mergeGo" data-i18n="mergeGo" disabled>Merge selected files</button>
+      </div>
+      <div class="result" id="mergeResult"></div>
+    </div>
+  </section>
+
+  <section class="panel-group" id="split" style="display:none">
+    <div class="panel">
+      <p class="lead" data-i18n="splitLead"></p>
+      <div class="drop" id="splitDrop"><b data-i18n="dropPdfsB">Drop PDFs here</b><span data-i18n="dropOrClick">or click to choose</span></div>
+      <input type="file" id="splitInput" accept="application/pdf" multiple hidden>
+      <div class="viewsw" id="splitViewSw" style="display:none;margin-top:16px"></div>
+      <div class="gwrap" id="splitList"></div>
+      <div class="pgrid" id="splitPages" style="display:none"></div>
+      <div class="gwrap" id="splitGroupsBox" style="display:none"></div>
+      <p class="hint" id="splitStatus"></p>
+      <p class="hint" id="splitInfo"></p>
+      <div class="field" style="margin-top:14px">
+        <label data-i18n="rangeLabel">Page ranges to extract</label>
+        <input type="text" id="splitRanges" data-i18n-ph="rangePh" style="max-width:320px">
+        <p class="hint" data-i18n="rangeHint"></p>
+      </div>
+      <div class="row">
+        <button class="btn" id="splitGo" data-i18n="splitGo" disabled>Extract by range</button>
+        <button class="btn ghost" id="splitCut" data-i18n="splitCut" disabled>Split into groups (.zip)</button>
+        <button class="btn ghost" id="splitEach" data-i18n="splitEach" disabled>One file per page (.zip)</button>
+      </div>
+      <div class="result" id="splitResult"></div>
+    </div>
+  </section>
+
+  <section class="panel-group" id="organize" style="display:none">
+    <div class="panel">
+      <p class="lead" data-i18n="orgLead"></p>
+      <div class="drop" id="organizeDrop"><b data-i18n="dropPdfsB">Drop PDFs here</b><span data-i18n="dropOrClick">or click to choose</span></div>
+      <input type="file" id="organizeInput" accept="application/pdf" multiple hidden>
+      <div class="viewsw" id="organizeViewSw" style="display:none;margin-top:16px"></div>
+      <div class="gwrap" id="organizeList"></div>
+      <div class="pgrid" id="organizePages" style="display:none"></div>
+      <p class="hint" id="organizeStatus"></p>
+      <div class="row">
+        <button class="btn" id="organizeGo" data-i18n="orgGo" disabled>Export new file</button>
+      </div>
+      <div class="result" id="organizeResult"></div>
+    </div>
+  </section>
+
+  <section class="panel-group" id="convert" style="display:none">
+    <div class="panel">
+      <p class="lead" data-i18n="convLead"></p>
+      <div class="split2">
+        <div class="field">
+          <div class="subhead" data-i18n="toPdf">Images to PDF</div>
+          <div class="drop" id="toPdfDrop"><b data-i18n="chooseImgs">Choose images</b><span>PNG, JPG</span></div>
+          <input type="file" id="toPdfInput" accept="image/png,image/jpeg" multiple hidden>
+          <ul class="filelist" id="toPdfList"></ul>
+          <button class="btn" id="toPdfGo" data-i18n="toPdfGo" disabled style="margin-top:8px">Convert to PDF</button>
+          <div class="result" id="toPdfResult"></div>
+        </div>
+        <div class="field">
+          <div class="subhead" data-i18n="fromPdf">PDF to images</div>
+          <div class="drop" id="fromPdfDrop"><b data-i18n="dropPdfsB">Drop PDFs here</b><span data-i18n="dropOrClick">or click to choose</span></div>
+          <input type="file" id="fromPdfInput" accept="application/pdf" multiple hidden>
+          <ul class="filelist" id="fromPdfList"></ul>
+          <p class="hint" id="fromInfo"></p>
+          <button class="btn" id="fromGo" data-i18n="fromGo" disabled style="margin-top:8px">Convert to PNG (.zip)</button>
+          <div class="result" id="fromResult"></div>
+        </div>
+      </div>
+      <p class="hint" data-i18n="convNote" style="margin-top:14px"></p>
+    </div>
+  </section>
+
+  <section class="panel-group" id="ocr" style="display:none">
+    <div class="panel">
+      <p class="lead" data-i18n="ocrLead"></p>
+      <div class="drop" id="ocrDrop"><b data-i18n="chooseOnePdf">Choose one PDF</b></div>
+      <input type="file" id="ocrInput" accept="application/pdf" hidden>
+      <p class="hint" id="ocrInfo"></p>
+      <div class="split2" style="margin-top:16px">
+        <div class="field">
+          <label data-i18n="ocrDpiLabel">Scan resolution</label>
+          <select id="ocrDpi">
+            <option value="150">150 dpi</option>
+            <option value="200">200 dpi</option>
+            <option value="300" selected>300 dpi</option>
+            <option value="400">400 dpi</option>
+          </select>
+          <p class="hint" data-i18n="ocrDpiHint"></p>
+        </div>
+        <div class="field">
+          <label data-i18n="ocrLangLabel">Text language</label>
+          <select id="ocrLang">
+            <option value="eng">English</option>
+            <option value="vie">Tiếng Việt</option>
+            <option value="eng+vie">English + Tiếng Việt</option>
+          </select>
+          <p class="hint" data-i18n="ocrLangHint"></p>
+        </div>
+      </div>
+      <label class="chk"><input type="checkbox" id="ocrSkip" checked><span data-i18n="ocrSkipLabel"></span></label>
+      <div class="row">
+        <button class="btn" id="ocrGo" data-i18n="ocrGo" disabled>Make searchable PDF</button>
+        <button class="btn ghost" id="ocrStop" data-i18n="ocrStop" style="display:none">Stop</button>
+      </div>
+      <div class="prog" id="ocrProg"><div class="bar" id="ocrBar"></div></div>
+      <p class="hint" id="ocrStatus"></p>
+      <div class="result" id="ocrResult"></div>
+      <p class="hint" data-i18n="ocrNote" style="margin-top:14px"></p>
+    </div>
+  </section>
+
+  <section class="panel-group" id="compress" style="display:none">
+    <div class="panel">
+      <p class="lead" data-i18n="cmpLead"></p>
+      <div class="drop" id="compressDrop"><b data-i18n="cmpDropB">Drop PDFs or images here</b><span data-i18n="dropOrClick">or click to choose</span></div>
+      <input type="file" id="compressInput" accept="application/pdf,image/png,image/jpeg" multiple hidden>
+      <ul class="filelist" id="compressList"></ul>
+      <div class="split2" style="margin-top:16px">
+        <div class="field">
+          <label data-i18n="cmpModeLabel">How to handle PDFs</label>
+          <select id="compressMode">
+            <option value="keep" data-i18n-opt="cmpModeKeep">Keep text (safe)</option>
+            <option value="raster" data-i18n-opt="cmpModeRaster">Rasterise pages (strong)</option>
+          </select>
+          <p class="hint" id="compressModeHint"></p>
+        </div>
+        <div class="field">
+          <label data-i18n="cmpQualityLabel">Image quality</label>
+          <select id="compressQ">
+            <option value="0.5">50% — smallest</option>
+            <option value="0.65">65%</option>
+            <option value="0.75" selected>75% — balanced</option>
+            <option value="0.85">85%</option>
+            <option value="0.92">92% — best looking</option>
+          </select>
+          <p class="hint" data-i18n="cmpQualityHint"></p>
+        </div>
+      </div>
+      <div class="split2">
+        <div class="field">
+          <label data-i18n="cmpMaxLabel">Shrink large images to</label>
+          <select id="compressMax">
+            <option value="0" data-i18n-opt="cmpMaxNone">Leave the size alone</option>
+            <option value="1600">1600 px on the long edge</option>
+            <option value="2000" selected>2000 px on the long edge</option>
+            <option value="3000">3000 px on the long edge</option>
+          </select>
+        </div>
+        <div class="field" id="compressDpiField">
+          <label data-i18n="cmpDpiLabel">Rasterise at</label>
+          <select id="compressDpi">
+            <option value="100">100 dpi</option>
+            <option value="120">120 dpi</option>
+            <option value="150" selected>150 dpi</option>
+            <option value="200">200 dpi</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn" id="compressGo" data-i18n="cmpGo" disabled>Reduce size</button>
+        <button class="btn ghost" id="compressStop" data-i18n="ocrStop" style="display:none">Stop</button>
+      </div>
+      <div class="prog" id="compressProg"><div class="bar" id="compressBar"></div></div>
+      <p class="hint" id="compressStatus"></p>
+      <div class="result" id="compressResult"></div>
+      <p class="hint" data-i18n="cmpNote" style="margin-top:14px"></p>
+    </div>
+  </section>
+  </div>
+</div>
+
+<!-- ==========================================================================
+     Local (vendored) libraries — no CDN needed, works on a blocked intranet.
+     Vendored 2026-09-07 from cdnjs.cloudflare.com. To upgrade: replace the file
+     in lib/ with the same file from the URL below, then bump the version here
+     and in README.md. Keep pdf.min.js and pdf.worker.min.js in lockstep.
+
+       lib/pdf-lib.min.js     pdf-lib 1.17.1
+         https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js
+       lib/jszip.min.js       JSZip 3.10.1
+         https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
+       lib/pdf.min.js         pdf.js 3.11.174
+         https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js
+       lib/pdf.worker.min.js  pdf.js 3.11.174  (worker — required by pdf.min.js)
+         https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js
+     ========================================================================== -->
+
+<!-- page preview (magnifier on a page card) -->
+<div class="modal" id="pvModal">
+  <div class="box">
+    <div class="hd"><span class="t" id="pvTitle"></span><button id="pvClose" title="">✕</button></div>
+    <div class="cv"><canvas id="pvCanvas"></canvas></div>
+  </div>
+</div>
+<script src="lib/pdf-lib.min.js"></script>
+<script src="lib/jszip.min.js"></script>
+<script src="lib/pdf.min.js"></script>
+<script>
+// Worker path is relative to this page. Over http(s) it runs as a real worker;
+// opened as a plain file:// page the browser blocks workers and pdf.js falls
+// back to the main thread (slower, still correct).
+if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc='lib/pdf.worker.min.js';
+const { PDFDocument, StandardFonts, degrees } = PDFLib;
+const $ = s => document.querySelector(s);
+
+const I18N = {
+  en:{
+    brand:"PDF Toolkit", brandSub:"Internal documents", navGroup:"Functions",
+    resetBtn:"Start over", resetTitle:"Clear the files and results on this page",
+    viewFiles:"Files", viewPages:"Pages", wsFilePages:(n)=>n===1?"1 page":`${n} pages`,
+    viewGroups:"Groups", tipRemove:"Remove this file",
+    tipLockedByRange:"Clear the page-range box to reorder, duplicate or delete pages",
+    wsFilteredInfo:(p)=>`Showing ${p.shown} of ${p.total} pages — the ones ${p.spec} addresses`,
+    wsGroupName:(p)=>`Part ${p.n} · pages ${p.label}`,
+    wsGroupsInfo:(p)=>`${p.groups} file(s) will be produced · ${p.pages} pages in total`,
+    wsNoGroups:"Nothing to group yet — type page ranges above, or click a scissors icon in the Pages view.",
+    e_no_groups:"No groups to split into. Type page ranges (e.g. 1-3,5-7) or set a split point with the scissors.",
+    selCount:(n)=>n===1?"1 page selected":`${n} pages selected`,
+    selDelete:"Delete selected", selRestore:"Restore selected", selClear:"Clear selection",
+    selHelp:"Ctrl+click, Shift+click or drag a box to pick several pages",
+    tipDelMany:(p)=>`Delete the ${p.n} selected pages`,
+    tipRename:"Rename this file", dlRename:"Rename the file before saving",
+    cmpLead:"Make PDFs and images smaller. Drop several at once — you get a .zip back, or a single file if you only added one.",
+    cmpDropB:"Drop PDFs or images here",
+    cmpModeLabel:"How to handle PDFs", cmpQualityLabel:"Image quality",
+    cmpMaxLabel:"Shrink large images to", cmpMaxNone:"Leave the size alone",
+    cmpDpiLabel:"Rasterise at",
+    cmpModeKeep:"Keep text (safe)", cmpModeRaster:"Rasterise pages (strong)",
+    cmpHintKeep:"Rebuilds the PDF and drops unused objects. Text stays searchable — but the saving is usually small, and on an already-tidy file it can be nothing at all.",
+    cmpHintRaster:"Turns every page into a JPEG. Big savings on scans, but the text becomes a picture: no more searching, selecting or copying — and any OCR layer is lost.",
+    cmpQualityHint:"Applies to images, and to PDF pages when rasterising.",
+    cmpGo:"Reduce size",
+    cmpNote:"A file is only replaced when the new one is genuinely smaller; anything that would grow is passed through untouched.",
+    cmpWorking:(p)=>`${p.done} / ${p.total} — ${p.name}`,
+    cmpListRow:(p)=>p.after==null?p.size:`${p.size} → ${p.after}  (${p.pct})`,
+    okCmp:"Done",
+    okCmpMeta:(p)=>`${p.files} file(s) · ${p.before} → ${p.after} (${p.pct})`+
+      (p.skipped?`\n${p.skipped} file(s) were already as small as they get and were left as they are`:''),
+    errCmp:"Couldn't reduce the file size",
+    e_cmp_none:"Nothing to work on. Add a PDF or an image first.",
+    e_cmp_type:(p)=>`Only PDF, PNG and JPG can be reduced: ${p.file}`,
+    ocrLead:"Recognise the text in a scanned PDF and add an invisible text layer, so the file becomes searchable and selectable. The original pages are kept exactly as they are.",
+    ocrDpiLabel:"Scan resolution", ocrLangLabel:"Text language",
+    ocrDpiHint:"300 dpi suits most office scans. Higher is slower and rarely more accurate.",
+    ocrLangHint:"Pick a single language where you can. Vietnamese is less accurate than English, especially the accents. The combined option is only for genuinely mixed pages — it weakens Vietnamese accents.",
+    ocrSkipLabel:"Skip pages that already contain text (much faster)",
+    ocrGo:"Make searchable PDF", ocrStop:"Stop",
+    ocrNote:"OCR runs entirely in your browser — nothing is uploaded.",
+    ocrLoadEngine:"Loading the recognition engine (first run only)…",
+    ocrPageStat:(p)=>`Page ${p.page} of ${p.total} — ${p.what}`,
+    ocrReading:"reading", ocrRecognising:"recognising text", ocrHasText:"already has text, skipped",
+    ocrSaving:"building the searchable PDF…",
+    okOcr:"Searchable PDF ready",
+    okOcrMeta:(p)=>`${p.ocred} page(s) recognised`+(p.skipped?` · ${p.skipped} already had text`:'')+
+      (p.words?` · ${p.words} words added`:'')+(p.empty?`\n${p.empty} page(s) produced no readable text`:'')+
+      (p.dropped?`\n${p.dropped} word(s) skipped — the font could not represent them`:''),
+    errOcr:"OCR failed", ocrStopped:"Stopped",
+    e_ocr_lib:"Couldn't load the recognition engine from lib/tess/. Check that the lib folder was uploaded with the page.",
+    e_ocr_font:"Couldn't load the Unicode font (lib/fontkit.umd.min.js and lib/fonts/DejaVuSans.ttf). Vietnamese needs it — without it the accents would be dropped.",
+    e_ocr_worker:"The recognition engine couldn't start. Open this page over a web address (http/https or GitHub Pages) rather than as a local file.",
+    e_ocr_cancel:"Stopped. No file was produced.",
+    e_ocr_none:"No text could be recognised on any page. The scan may be too low-resolution, skewed, or not text at all.",
+    tipPreview:"Preview page", tipRotate:"Rotate 90°", tipDup:"Duplicate page", tipDel:"Delete / restore",
+    tipCut:"Split here", tipCutOn:"Remove this split", pvClose:"Close",
+    wsLoading:(p)=>`Building previews… ${p.done} / ${p.total}`,
+    wsPagesInfo:(p)=>p.keep===p.total?`${p.total} pages from ${p.files} file(s)`
+      :`Keeping ${p.keep} of ${p.total} pages`,
+    wsCuts:(n)=>n===0?"Click a scissors icon between two pages to set a split point."
+      :`${n} split point(s) — the file will be cut into ${n+1} parts.`,
+    splitCut:"Split into groups (.zip)",
+    okSplitCut:"Split at cut marks", okSplitCutMeta:(p)=>`${p.parts} files in .zip · ${p.pages} pages`,
+    e_no_cuts:"No split points set. Click a scissors icon between two pages first.",
+    e_ws_empty:"No pages left. Restore a page or add a file.",
+    nav:{merge:"Merge",split:"Split",organize:"Organize pages",convert:"Convert format",ocr:"OCR — searchable PDF",compress:"Reduce file size"},
+    crumb:{merge:"Functions · Merge documents",split:"Functions · Split pages",
+      organize:"Functions · Reorder / rotate / delete",convert:"Functions · Convert",
+      ocr:"Functions · Recognise text in a scan",
+      compress:"Functions · Make PDFs and images smaller"},
+    privacyNote:"All files are processed in your browser. Nothing is uploaded.",
+    mergeLead:"Choose PDFs to merge, then drag rows to set the order.",
+    dropPdfsB:"Drop PDFs here", dropOrClick:"or click to choose", mergeNamePh:"Output file name (merged.pdf)",
+    mergeGo:"Merge selected files",
+    splitLead:"Add one or more PDFs. Page numbers run straight through the files in the order shown, so you can extract a range, cut into groups, or split every page into its own file.",
+    chooseOnePdf:"Choose one PDF", rangeLabel:"Page ranges to extract", rangePh:"e.g. 1-3,5,8-10",
+    rangeHint:"Extract by range puts these pages in one file. Split into groups makes each comma-separated part its own file — see the Groups view.",
+    splitGo:"Extract by range", splitEach:"One file per page (.zip)",
+    orgLead:"Add one or more PDFs, then drag the page tiles to reorder them, rotate, duplicate or mark pages for deletion. Everything exports as a single document.",
+    orgGo:"Export new file", orgHint:"Drag to reorder · ↻ rotate · ✕ delete",
+    orgLoading:(p)=>`Building previews… ${p.done} / ${p.total}`,
+    orgKeep:(p)=>p.keep===p.total?`${p.total} pages — drag a tile to reorder`
+      :`Keeping ${p.keep} of ${p.total} pages`,
+    orgThumbFail:"Preview unavailable",
+    convLead:"Turn images into a PDF, or render a PDF's pages to PNG images.",
+    toPdf:"Images to PDF", chooseImgs:"Choose images", toPdfGo:"Convert to PDF",
+    fromPdf:"PDF to images", fromGo:"Convert to PNG (.zip)",
+    convNote:"This browser version handles images ↔ PDF only. Word / Excel / PowerPoint ↔ PDF needs the server version.",
+    page:(n)=>`Page ${n}`, rotTitle:"Rotate 90°", delTitle:"Delete / restore",
+    selected:(n)=>`Selected: ${n}`, download:"Download", working:"Working…",
+    okMerge:"Merged", okMergeMeta:(j)=>`${j.pages} pages · ${j.merged} files`+(j.skipped.length?`\nSkipped: ${j.skipped.join(', ')}`:''),
+    okSplit:"Split complete", okSplitMeta:(n)=>`${n} pages`,
+    okSplitEach:"Split each page", okSplitEachMeta:(n)=>`${n} files in .zip`,
+    okOrg:"New file exported", okOrgMeta:(n)=>`${n} pages`,
+    okToPdf:"Converted to PDF", okToPdfMeta:(n)=>`${n} images`,
+    okFrom:"Converted to images", okFromMeta:(n)=>`${n} pages`,
+    errMerge:"Couldn't merge", errSplit:"Couldn't split", errOrg:"Error",
+    errReadPdf:"Couldn't read the PDF", errConv:"Couldn't convert",
+    e_no_pages:"No pages to merge. Add at least two PDFs.",
+    e_no_keep:"Every page is marked for deletion. Keep at least one page.",
+    e_range:(p)=>`Pages do not exist: ${p.bad} (document has ${p.total} pages).`,
+    e_read:"Couldn't read this file. It may be corrupted or password-protected.",
+    e_img:(p)=>`Only PNG and JPG are supported here: ${p.file}`,
+  },
+  vi:{
+    brand:"Công cụ PDF", brandSub:"Tài liệu nội bộ", navGroup:"Chức năng",
+    resetBtn:"Bắt đầu lại", resetTitle:"Xóa các file và kết quả trên trang này",
+    viewFiles:"Tệp", viewPages:"Trang", wsFilePages:(n)=>`${n} trang`,
+    viewGroups:"Nhóm", tipRemove:"Bỏ tệp này",
+    tipLockedByRange:"Xóa nội dung ô khoảng trang để đổi thứ tự, nhân đôi hoặc xóa trang",
+    wsFilteredInfo:(p)=>`Đang hiện ${p.shown}/${p.total} trang — những trang mà ${p.spec} chỉ tới`,
+    wsGroupName:(p)=>`Phần ${p.n} · trang ${p.label}`,
+    wsGroupsInfo:(p)=>`Sẽ tạo ${p.groups} tệp · tổng ${p.pages} trang`,
+    wsNoGroups:"Chưa có nhóm nào — hãy nhập khoảng trang ở trên, hoặc bấm biểu tượng cái kéo trong mục Trang.",
+    e_no_groups:"Không có nhóm nào để tách. Hãy nhập khoảng trang (ví dụ 1-3,5-7) hoặc đặt điểm tách bằng cái kéo.",
+    selCount:(n)=>`Đã chọn ${n} trang`,
+    selDelete:"Xóa các trang đã chọn", selRestore:"Khôi phục các trang đã chọn", selClear:"Bỏ chọn",
+    selHelp:"Ctrl+bấm, Shift+bấm hoặc rê chuột tạo khung để chọn nhiều trang",
+    tipDelMany:(p)=>`Xóa ${p.n} trang đã chọn`,
+    tipRename:"Đổi tên tệp này", dlRename:"Đổi tên tệp trước khi lưu",
+    cmpLead:"Làm nhẹ PDF và ảnh. Có thể thả nhiều file cùng lúc — kết quả trả về là .zip, hoặc một file duy nhất nếu bạn chỉ thêm một.",
+    cmpDropB:"Kéo thả PDF hoặc ảnh vào đây",
+    cmpModeLabel:"Cách xử lý PDF", cmpQualityLabel:"Chất lượng ảnh",
+    cmpMaxLabel:"Thu nhỏ ảnh lớn về", cmpMaxNone:"Giữ nguyên kích thước",
+    cmpDpiLabel:"Chuyển thành ảnh ở",
+    cmpModeKeep:"Giữ chữ (an toàn)", cmpModeRaster:"Chuyển trang thành ảnh (mạnh)",
+    cmpHintKeep:"Dựng lại PDF và loại bỏ đối tượng thừa. Chữ vẫn tìm kiếm được — nhưng mức giảm thường nhỏ, với file vốn đã gọn thì có thể không giảm chút nào.",
+    cmpHintRaster:"Biến mỗi trang thành một ảnh JPEG. Giảm rất mạnh với bản scan, nhưng chữ sẽ thành hình: không còn tìm kiếm, bôi chọn hay sao chép được — và lớp OCR sẽ mất.",
+    cmpQualityHint:"Áp dụng cho ảnh, và cho các trang PDF khi chuyển thành ảnh.",
+    cmpGo:"Giảm dung lượng",
+    cmpNote:"Chỉ thay thế khi file mới thực sự nhỏ hơn; file nào bị phình ra sẽ được giữ nguyên bản gốc.",
+    cmpWorking:(p)=>`${p.done}/${p.total} — ${p.name}`,
+    cmpListRow:(p)=>p.after==null?p.size:`${p.size} → ${p.after}  (${p.pct})`,
+    okCmp:"Đã xong",
+    okCmpMeta:(p)=>`${p.files} file · ${p.before} → ${p.after} (${p.pct})`+
+      (p.skipped?`\n${p.skipped} file vốn đã nhỏ hết mức nên được giữ nguyên`:''),
+    errCmp:"Không giảm được dung lượng",
+    e_cmp_none:"Chưa có gì để xử lý. Hãy thêm một file PDF hoặc ảnh.",
+    e_cmp_type:(p)=>`Chỉ giảm được PDF, PNG và JPG: ${p.file}`,
+    ocrLead:"Nhận dạng chữ trong PDF đã scan và thêm một lớp chữ ẩn, để file có thể tìm kiếm và bôi chọn được. Các trang gốc được giữ nguyên.",
+    ocrDpiLabel:"Độ phân giải khi scan", ocrLangLabel:"Ngôn ngữ của chữ",
+    ocrDpiHint:"300 dpi phù hợp với phần lớn bản scan văn phòng. Cao hơn sẽ chậm hơn mà ít khi chính xác hơn.",
+    ocrLangHint:"Nên chọn một ngôn ngữ khi có thể. Tiếng Việt nhận dạng kém chính xác hơn tiếng Anh, nhất là dấu. Tùy chọn kết hợp chỉ dành cho trang thật sự lẫn hai thứ tiếng — nó làm mất dấu tiếng Việt.",
+    ocrSkipLabel:"Bỏ qua những trang đã có chữ (nhanh hơn nhiều)",
+    ocrGo:"Tạo PDF tìm kiếm được", ocrStop:"Dừng",
+    ocrNote:"OCR chạy hoàn toàn trong trình duyệt — không có gì được tải lên.",
+    ocrLoadEngine:"Đang tải bộ nhận dạng (chỉ lần đầu)…",
+    ocrPageStat:(p)=>`Trang ${p.page}/${p.total} — ${p.what}`,
+    ocrReading:"đang đọc", ocrRecognising:"đang nhận dạng chữ", ocrHasText:"đã có chữ, bỏ qua",
+    ocrSaving:"đang tạo PDF tìm kiếm được…",
+    okOcr:"PDF tìm kiếm được đã xong",
+    okOcrMeta:(p)=>`Đã nhận dạng ${p.ocred} trang`+(p.skipped?` · ${p.skipped} trang đã có chữ`:'')+
+      (p.words?` · thêm ${p.words} từ`:'')+(p.empty?`\n${p.empty} trang không đọc được chữ nào`:'')+
+      (p.dropped?`\n${p.dropped} từ bị bỏ qua — phông chữ không thể hiện được`:''),
+    errOcr:"OCR không thành công", ocrStopped:"Đã dừng",
+    e_ocr_lib:"Không tải được bộ nhận dạng từ lib/tess/. Hãy kiểm tra thư mục lib đã được tải lên cùng trang chưa.",
+    e_ocr_font:"Không tải được phông Unicode (lib/fontkit.umd.min.js và lib/fonts/DejaVuSans.ttf). Tiếng Việt cần phông này — nếu thiếu, các dấu sẽ bị mất.",
+    e_ocr_worker:"Bộ nhận dạng không khởi động được. Hãy mở trang qua địa chỉ web (http/https hoặc GitHub Pages) thay vì mở file trực tiếp.",
+    e_ocr_cancel:"Đã dừng. Không có file nào được tạo.",
+    e_ocr_none:"Không nhận dạng được chữ trên bất kỳ trang nào. Bản scan có thể quá mờ, bị lệch, hoặc không phải là chữ.",
+    tipPreview:"Xem trước trang", tipRotate:"Xoay 90°", tipDup:"Nhân đôi trang", tipDel:"Xóa / khôi phục",
+    tipCut:"Tách tại đây", tipCutOn:"Bỏ điểm tách này", pvClose:"Đóng",
+    wsLoading:(p)=>`Đang tạo ảnh xem trước… ${p.done} / ${p.total}`,
+    wsPagesInfo:(p)=>p.keep===p.total?`${p.total} trang từ ${p.files} tệp`
+      :`Giữ lại ${p.keep} trong ${p.total} trang`,
+    wsCuts:(n)=>n===0?"Bấm vào biểu tượng cái kéo giữa hai trang để đặt điểm tách."
+      :`${n} điểm tách — tệp sẽ được cắt thành ${n+1} phần.`,
+    splitCut:"Tách thành nhóm (.zip)",
+    okSplitCut:"Đã tách tại điểm đã cắt", okSplitCutMeta:(p)=>`${p.parts} tệp trong .zip · ${p.pages} trang`,
+    e_no_cuts:"Chưa đặt điểm tách. Hãy bấm vào biểu tượng cái kéo giữa hai trang trước.",
+    e_ws_empty:"Không còn trang nào. Hãy khôi phục một trang hoặc thêm tệp.",
+    nav:{merge:"Gộp PDF",split:"Tách trang",organize:"Sắp xếp trang",convert:"Chuyển đổi định dạng",ocr:"OCR — PDF tìm kiếm được",compress:"Giảm dung lượng"},
+    crumb:{merge:"Chức năng · Gộp tài liệu",split:"Chức năng · Tách trang",
+      organize:"Chức năng · Sắp xếp / xoay / xóa",convert:"Chức năng · Chuyển đổi",
+      ocr:"Chức năng · Nhận dạng chữ trong bản scan",
+      compress:"Chức năng · Làm nhẹ PDF và ảnh"},
+    privacyNote:"Mọi file được xử lý ngay trong trình duyệt. Không có gì được tải lên máy chủ.",
+    mergeLead:"Chọn các PDF cần gộp, rồi kéo từng dòng để sắp thứ tự.",
+    dropPdfsB:"Kéo thả PDF vào đây", dropOrClick:"hoặc bấm để chọn file", mergeNamePh:"Tên file kết quả (merged.pdf)",
+    mergeGo:"Gộp file đã chọn",
+    splitLead:"Thêm một hoặc nhiều PDF. Số trang được đánh liên tục qua các tệp theo thứ tự đang hiển thị, nên bạn có thể lấy một khoảng, cắt thành nhóm, hoặc tách mỗi trang thành một tệp riêng.",
+    chooseOnePdf:"Chọn 1 file PDF", rangeLabel:"Khoảng trang cần lấy", rangePh:"Ví dụ: 1-3,5,8-10",
+    rangeHint:"Tách theo khoảng gộp các trang này vào một file. Tách thành nhóm sẽ tạo mỗi phần cách nhau bằng dấu phẩy thành một file riêng — xem mục Nhóm.",
+    splitGo:"Tách theo khoảng", splitEach:"Mỗi trang một file (.zip)",
+    orgLead:"Thêm một hoặc nhiều PDF, rồi kéo các ô trang để đổi thứ tự, xoay, nhân đôi hoặc đánh dấu xóa. Tất cả sẽ được xuất thành một tài liệu duy nhất.",
+    orgGo:"Xuất file mới", orgHint:"Kéo để đổi thứ tự · ↻ để xoay · ✕ để xóa",
+    orgLoading:(p)=>`Đang tạo ảnh xem trước… ${p.done} / ${p.total}`,
+    orgKeep:(p)=>p.keep===p.total?`${p.total} trang — kéo một ô để đổi thứ tự`
+      :`Giữ lại ${p.keep} trong ${p.total} trang`,
+    orgThumbFail:"Không xem trước được",
+    convLead:"Ghép ảnh thành PDF, hoặc kết xuất các trang PDF thành ảnh PNG.",
+    toPdf:"Ảnh sang PDF", chooseImgs:"Chọn ảnh", toPdfGo:"Chuyển sang PDF",
+    fromPdf:"PDF sang ảnh", fromGo:"Chuyển sang PNG (.zip)",
+    convNote:"Bản trình duyệt này chỉ xử lý ảnh ↔ PDF. Word / Excel / PowerPoint ↔ PDF cần bản chạy trên máy chủ.",
+    page:(n)=>`Trang ${n}`, rotTitle:"Xoay 90°", delTitle:"Xóa / khôi phục",
+    selected:(n)=>`Đã chọn: ${n}`, download:"Tải xuống", working:"Đang xử lý…",
+    okMerge:"Đã gộp xong", okMergeMeta:(j)=>`${j.pages} trang · ${j.merged} file`+(j.skipped.length?`\nBỏ qua: ${j.skipped.join(', ')}`:''),
+    okSplit:"Đã tách", okSplitMeta:(n)=>`${n} trang`,
+    okSplitEach:"Đã tách mỗi trang", okSplitEachMeta:(n)=>`${n} file trong .zip`,
+    okOrg:"Đã xuất file mới", okOrgMeta:(n)=>`${n} trang`,
+    okToPdf:"Đã chuyển sang PDF", okToPdfMeta:(n)=>`${n} ảnh`,
+    okFrom:"Đã chuyển thành ảnh", okFromMeta:(n)=>`${n} trang`,
+    errMerge:"Không gộp được", errSplit:"Không tách được", errOrg:"Lỗi",
+    errReadPdf:"Không đọc được PDF", errConv:"Không chuyển được",
+    e_no_pages:"Chưa có gì để gộp. Hãy thêm ít nhất hai file PDF.",
+    e_no_keep:"Tất cả các trang đều bị đánh dấu xóa. Hãy giữ lại ít nhất một trang.",
+    e_range:(p)=>`Trang không tồn tại: ${p.bad} (tài liệu có ${p.total} trang).`,
+    e_read:"Không đọc được file này. Có thể file bị hỏng hoặc đặt mật khẩu.",
+    e_img:(p)=>`Bản này chỉ hỗ trợ PNG và JPG: ${p.file}`,
+  }
+};
+
+let lang='en';
+try{ const s=localStorage.getItem('pdftk_lang'); if(s==='vi'||s==='en') lang=s; }catch(e){}
+const T = k => I18N[lang][k];
+
+function fail(code, params){ const e=new Error(code); e.code=code; e.params=params||{}; return e; }
+function msgOf(e){ const m=I18N[lang][e&&e.code]; if(m) return typeof m==='function'?m(e.params):m; return T('errReadPdf'); }
+
+function applyStatic(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const v=T(el.dataset.i18n); if(typeof v==='string') el.textContent=v;});
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{el.placeholder=T(el.dataset.i18nPh);});
+  document.querySelectorAll('[data-i18n-opt]').forEach(el=>{el.textContent=T(el.dataset.i18nOpt);});
+  document.querySelectorAll('.navitem').forEach(b=>{b.textContent=T('nav')[b.dataset.tab];});
+  const a=document.querySelector('.navitem.active').dataset.tab;
+  $('#pageTitle').textContent=T('nav')[a]; $('#pageCrumb').textContent=T('crumb')[a];
+  $('#privacyNote').textContent=T('privacyNote');
+  $('#resetBtn').title=T('resetTitle');
+  $('#pvClose').title=T('pvClose');
+  // An open result panel keeps its Download button and rename box, so retranslate those
+  // controls. The status line above them is left as generated — it reports what happened
+  // at the time, and showResult() is handed finished strings rather than message keys.
+  document.querySelectorAll('.result a.btn').forEach(a=>{ a.textContent=T('download'); });
+  document.querySelectorAll('.result .dlname').forEach(i=>{
+    i.title=T('dlRename'); i.setAttribute('aria-label',T('dlRename')); });
+  // The page workspaces build their cards, tiles and status text in JS rather than from
+  // data-i18n, so re-render them on a language switch (cached thumbnails are reused).
+  if(typeof WS!=='undefined'){
+    [WS.merge,WS.split,WS.organize].forEach(w=>{ if(w && w.files.length) wsRender(w); });
+  }
+  if(typeof cmpSync==='function') cmpSync();   // mode hint + dpi visibility are language-dependent
+  $('#langEn').classList.toggle('on',lang==='en'); $('#langVi').classList.toggle('on',lang==='vi');
+}
+function setLang(l){ lang=l; try{localStorage.setItem('pdftk_lang',l);}catch(e){} applyStatic(); }
+
+document.querySelectorAll('.navitem').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.navitem').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel-group').forEach(x=>x.style.display='none');
+  b.classList.add('active'); $('#'+b.dataset.tab).style.display='block';
+  $('#pageTitle').textContent=T('nav')[b.dataset.tab]; $('#pageCrumb').textContent=T('crumb')[b.dataset.tab];
+  window.scrollTo(0,0);
+});
+
+function wireDrop(dropSel, inputSel, onFiles){
+  const drop=$(dropSel), input=$(inputSel);
+  drop.onclick=()=>input.click();
+  input.onchange=()=>onFiles([...input.files]);
+  ['dragover','dragenter'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.add('hover')}));
+  ['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('hover')}));
+  drop.addEventListener('drop',ev=>onFiles([...ev.dataTransfer.files]));
+}
+// Keep a usable filename: drop only the characters Windows/macOS reject in a name
+// (spaces and hyphens are fine), and put the original extension back if the user
+// deletes it — a .pdf saved as "report" with no extension is a nuisance.
+function safeName(name, ext){
+  let n=String(name||'').replace(/[\\/:*?"<>|]/g,'').trim().replace(/^\.+/,'');
+  if(!n) n='download';
+  if(ext && n.slice(-ext.length).toLowerCase()!==ext.toLowerCase()) n+=ext;
+  return n;
+}
+function showResult(sel, ok, title, meta, dl, dlName){
+  const el=$(sel); el.className='result show'+(ok?'':' error');
+  el.innerHTML=`<h3>${title}</h3><div class="meta">${meta||''}</div>`;
+  if(!dl) return;
+  const ext=(String(dlName).match(/\.[a-z0-9]+$/i)||[''])[0];
+  const row=document.createElement('div'); row.className='row';
+  const inp=document.createElement('input');
+  inp.type='text'; inp.className='dlname'; inp.value=dlName;
+  inp.title=T('dlRename'); inp.setAttribute('aria-label',T('dlRename'));
+  const a=document.createElement('a');
+  a.className='btn'; a.textContent=T('download');
+  a.href=URL.createObjectURL(dl); a.download=dlName;
+  // the link's download attribute is the only thing that names the saved file
+  inp.oninput=()=>{ a.download=safeName(inp.value,ext); };
+  inp.onblur=()=>{ inp.value=safeName(inp.value,ext); a.download=inp.value; };
+  inp.onkeydown=e=>{ if(e.key==='Enter'){ e.preventDefault(); inp.blur(); a.click(); } };
+  row.appendChild(inp); row.appendChild(a); el.appendChild(row);
+}
+function busy(btn,on){ btn.disabled=on; btn.dataset._t=btn.dataset._t||btn.innerHTML; btn.innerHTML=on?`<span class="spin"></span>`:btn.dataset._t; }
+const bytesOf = f => f.arrayBuffer();
+function parseRanges(spec,total){ const out=[]; for(const c of (spec||'').replace(/\s/g,'').split(',')){ if(!c)continue;
+  if(c.includes('-')){let[a,b]=c.split('-').map(Number); if(a>b)[a,b]=[b,a]; for(let i=a;i<=b;i++)out.push(i-1);} else out.push(Number(c)-1);}
+  const bad=out.filter(i=>isNaN(i)||i<0||i>=total).map(i=>i+1); if(bad.length) throw fail('e_range',{bad:bad.join(','),total}); return out; }
+
+// ===== PAGES WORKSPACE (shared by Merge and Split) =========================
+// One workspace per tab. It owns the loaded files and a flat page list built from
+// them, so the Files view and the Pages view are two windows onto the same state.
+//
+// A page entry is {f, p, rot, del, cut, thumb}:
+//   f/p   index of the source file and the 0-based page inside it
+//   cut   true = a split point sits AFTER this page (Split tab only)
+//   thumb cached PNG data URL. Rendered ONCE, sequentially; rotation is a CSS
+//         transform, never a re-render (same reasoning as the Organize tab).
+const SVG = {
+  files:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 12h6M9 16h6"/></svg>',
+  pages:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
+  zoom:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2M11 8v6M8 11h6"/></svg>',
+  rotate:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>',
+  dup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M15 5H5a2 2 0 0 0-2 2v10" stroke-linecap="round"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6"/><path d="M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>',
+  groups:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="7" width="11" height="14" rx="1.5"/><path d="M7 4h9a1.5 1.5 0 0 1 1.5 1.5V17" stroke-linecap="round"/><path d="M11 3.5h8A1.5 1.5 0 0 1 20.5 5v11" stroke-linecap="round" opacity=".55"/></svg>',
+  scissors:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><path d="M20 4L8.6 15.4M8.6 8.6L20 20"/></svg>'
+};
+const WS_THUMB_PX = 300;   // rendered bitmap width for a page card
+
+function makeWS(tab, opts){
+  const grid=$('#'+tab+'Pages');
+  // the selection bar lives just above the grid; created here so the three tabs
+  // don't each need their own markup for it
+  const selbar=document.createElement('div');
+  selbar.className='selbar';
+  grid.parentNode.insertBefore(selbar, grid);
+  return { tab, cuts:!!opts.cuts, multi:!!opts.multi, files:[], pages:[], names:[],
+           docs:[], bytes:[], view:'files', token:0, built:0,
+           sel:new Set(), selAnchor:null,
+           el:{ sw:$('#'+tab+'ViewSw'), list:$('#'+tab+'List'),
+                grid:grid, status:$('#'+tab+'Status'), selbar:selbar,
+                groups:$('#'+tab+'GroupsBox') } };   // only the Split tab has one
+}
+const WS = { merge:null, split:null, organize:null };
+
+// ---- loading -------------------------------------------------------------
+async function wsAddFiles(ws, fs){
+  const pdfs = fs.filter(f=>f.name.toLowerCase().endsWith('.pdf'));
+  if(!pdfs.length) return;
+  if(ws.multi) ws.files.push(...pdfs); else { wsClear(ws); ws.files=[pdfs[0]]; }
+  const token=++ws.token;
+  wsRender(ws);
+  try{
+    // rebuild the page list from every loaded file
+    ws.bytes=[]; ws.pages=[]; ws.built=0;
+    for(let fi=0; fi<ws.files.length; fi++){
+      const buf=await bytesOf(ws.files[fi]);
+      if(token!==ws.token) return;
+      ws.bytes[fi]=buf;
+      const doc=await PDFDocument.load(buf);
+      for(let p=0;p<doc.getPageCount();p++) ws.pages.push({f:fi,p,rot:0,del:false,cut:false,thumb:null});
+    }
+    wsRender(ws);
+    await wsBuildThumbs(ws, token);
+  }catch(e){
+    if(token!==ws.token) return;
+    showResult('#'+ws.tab+'Result', false, T('errReadPdf'), msgOf(e&&e.code?e:fail('e_read')));
+  }
+}
+// pdf.js gets a COPY of each buffer: getDocument() transfers it to the worker and
+// detaches the original, which pdf-lib still needs at export time.
+async function wsDoc(ws, fi){
+  if(!ws.docs[fi]) ws.docs[fi]=await pdfjsLib.getDocument({data:ws.bytes[fi].slice(0)}).promise;
+  return ws.docs[fi];
+}
+async function wsBuildThumbs(ws, token){
+  for(const pg of ws.pages){
+    if(token!==ws.token) return;
+    try{
+      const doc=await wsDoc(ws,pg.f);
+      const page=await doc.getPage(pg.p+1);
+      const base=page.getViewport({scale:1});
+      const vp=page.getViewport({scale:WS_THUMB_PX/base.width, rotation:base.rotation});
+      const cv=document.createElement('canvas');
+      cv.width=Math.ceil(vp.width); cv.height=Math.ceil(vp.height);
+      await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+      if(token!==ws.token) return;
+      pg.thumb=cv.toDataURL('image/png');
+    }catch(_){ pg.thumb='fail'; }
+    ws.built++; wsPaint(ws,pg); wsStatus(ws);
+    // wsPaint only touches the Pages grid, so a card view has to be refreshed too or
+    // its thumbnail would spin forever while sitting on the Files/Groups tab.
+    if(ws.view==='files') wsRenderFiles(ws);
+    else if(ws.view==='groups') wsRenderGroups(ws);
+    await new Promise(r=>setTimeout(r,0));
+  }
+}
+function wsClear(ws){
+  ws.token++;
+  ws.docs.forEach(d=>{ if(d) Promise.resolve(d.destroy()).catch(()=>{}); });
+  ws.docs=[]; ws.bytes=[]; ws.files=[]; ws.names=[]; ws.pages=[]; ws.built=0; ws.view='files';
+  ws.sel=new Set(); ws.selAnchor=null;
+  ws.el.list.innerHTML=''; ws.el.grid.innerHTML=''; ws.el.status.textContent='';
+  ws.el.sw.style.display='none'; ws.el.grid.style.display='none'; ws.el.list.style.display='';
+  if(ws.el.selbar){ ws.el.selbar.style.display='none'; ws.el.selbar.innerHTML=''; }
+}
+
+// ---- Files / Pages / Groups switch ---------------------------------------
+function wsRenderSwitch(ws){
+  const sw=ws.el.sw;
+  sw.style.display = ws.files.length ? 'inline-flex' : 'none';
+  const btn=(v,icon,label)=>'<button data-view="'+v+'" class="'+(ws.view===v?'on':'')+'">'+icon+'<span>'+label+'</span></button>';
+  sw.innerHTML = btn('files',SVG.files,T('viewFiles')) + btn('pages',SVG.pages,T('viewPages'))
+               + (ws.el.groups ? btn('groups',SVG.groups,T('viewGroups')) : '');
+  sw.querySelectorAll('button').forEach(b=>b.onclick=()=>{ ws.view=b.dataset.view; wsRender(ws); });
+}
+function wsRender(ws){
+  const v=ws.view;
+  ws.el.list.style.display = v==='files' ? 'flex' : 'none';
+  ws.el.grid.style.display = v==='pages' ? 'flex' : 'none';
+  if(ws.el.groups) ws.el.groups.style.display = v==='groups' ? 'flex' : 'none';
+  wsRenderSwitch(ws);
+  if(v==='pages') wsRenderPages(ws);
+  else if(v==='groups') wsRenderGroups(ws);
+  else wsRenderFiles(ws);
+  wsStatus(ws);
+  wsSyncButtons(ws);
+}
+function wsStatus(ws){
+  const el=ws.el.status;
+  if(!ws.pages.length){ el.textContent=''; return; }
+  if(ws.built<ws.pages.length){ el.textContent=T('wsLoading')({done:ws.built,total:ws.pages.length}); return; }
+  const keep=ws.pages.filter(p=>!p.del).length;
+  let txt=T('wsPagesInfo')({keep,total:ws.pages.length,files:ws.files.length});
+  if(ws.view==='pages' && !ws.sel.size && ws.pages.length>1 && !wsVisiblePages(ws).filtered)
+    txt += ' · ' + T('selHelp');
+  if(ws.cuts && ws.view==='pages'){
+    const vis=wsVisiblePages(ws);
+    if(vis.filtered){
+      // the view is narrowed, so say so rather than reporting the whole file
+      txt=T('wsFilteredInfo')({shown:vis.pages.length,total:keep,spec:vis.spec});
+    }else{
+      txt += ' · ' + T('wsCuts')(wsCutCount(ws));
+    }
+  }
+  if(ws.cuts && ws.view==='groups'){
+    let g; try{ g=wsSegments(ws); }catch(e){ el.textContent=msgOf(e); return; }
+    txt = T('wsGroupsInfo')({groups:g.groups.length, pages:g.groups.reduce((n,x)=>n+x.pages.length,0)});
+  }
+  el.textContent=txt;
+}
+// A cut on the very last page would make an empty trailing segment, so it never counts.
+function wsCutCount(ws){ const k=wsKept(ws); return k.filter((p,i)=>p.cut && i<k.length-1).length; }
+
+// ---- segments: what a split will actually produce -------------------------
+// Two ways to describe the same thing. If the range box has something in it, each
+// comma-separated part becomes its own group -- so "1-3,5-7" is two files and page 4
+// is left out entirely. Otherwise the armed scissors partition the kept pages.
+// The Groups preview and the export both read this, so what you see is what you get.
+function wsSegments(ws){
+  const keep=wsKept(ws);
+  const box=$('#splitRanges');
+  const spec=((box && box.value) || '').trim();
+  if(spec){
+    const groups=[];
+    for(const tok of spec.replace(/\s/g,'').split(',')){
+      if(!tok) continue;
+      const idx=parseRanges(tok, keep.length);       // throws e_range when out of bounds
+      const pages=idx.map(i=>keep[i]).filter(Boolean);
+      if(pages.length) groups.push({pages:pages, label:tok});
+    }
+    return {mode:'ranges', groups:groups};
+  }
+  const groups=[]; let cur=[], from=1;
+  keep.forEach((pg,i)=>{
+    cur.push(pg);
+    if(pg.cut && i<keep.length-1){ groups.push({pages:cur, label:from+'-'+(i+1)}); cur=[]; from=i+2; }
+  });
+  if(cur.length) groups.push({pages:cur, label:from+'-'+keep.length});
+  return {mode:'cuts', groups:groups};
+}
+
+// ---- stacked card, shared by the Files and Groups views -------------------
+// The offset sheets behind the thumbnail are pure CSS (.sheets::before/::after) and
+// only show when the card stands for more than one page.
+function wsCardEl(opts){
+  const c=document.createElement('div');
+  c.className='gcard';
+  c.innerHTML=
+    '<div class="stack"><span class="sheets'+(opts.count>1?' multi':'')+'"><span class="ph"></span></span></div>'+
+    '<span class="fname"></span>'+
+    '<span class="count"></span>';
+  c.querySelector('.fname').textContent=opts.label;      // untrusted filename text
+  c.querySelector('.count').textContent=T('wsFilePages')(opts.count);
+  if(opts.actions && opts.actions.length){
+    const bar=document.createElement('div'); bar.className='bar';
+    opts.actions.forEach(a=>{
+      const b=document.createElement('button');
+      b.innerHTML=a.icon; b.title=a.title; if(a.danger) b.className='danger';
+      b.onclick=e=>{ e.stopPropagation(); a.run(); };
+      bar.appendChild(b);
+    });
+    c.insertBefore(bar,c.firstChild);
+  }
+  return c;
+}
+// Drop a cached page thumbnail into a card's sheet stack.
+function wsFillCard(card, page){
+  const box=card.querySelector('.sheets'); if(!box||!page) return;
+  if(page.thumb==='fail'){ box.innerHTML='<span class="thumbfail">'+T('orgThumbFail')+'</span>'; return; }
+  if(!page.thumb) return;                                 // still building -- keep the spinner
+  const img=document.createElement('img');
+  img.src=page.thumb; img.draggable=false; img.alt=T('page')(page.p+1);
+  img.style.transform='rotate('+page.rot+'deg)';
+  box.innerHTML=''; box.appendChild(img);
+}
+
+// ---- Files view ----------------------------------------------------------
+// Display name for a loaded file. A File object's .name is read-only, so a rename is
+// held in ws.names[] and everything user-facing (tags, preview title, output stems)
+// reads through here. The bytes are untouched.
+function wsName(ws, fi){
+  return (ws.names && ws.names[fi]) || (ws.files[fi] ? ws.files[fi].name : '');
+}
+function wsStem(ws, fi){ return wsName(ws,fi).replace(/\.pdf$/i,'') || 'file'; }
+// With several files loaded, naming every output after the first one would misrepresent
+// where the pages came from, so fall back to a neutral stem.
+function wsOutStem(ws){ return ws.files.length===1 ? wsStem(ws,0) : 'split'; }
+function wsFirstPageOf(ws, fi){ return ws.pages.find(p=>p.f===fi) || null; }
+
+function wsRenderFiles(ws){
+  const box=ws.el.list; box.innerHTML='';
+  ws.files.forEach((f,i)=>{
+    const mine=ws.pages.filter(p=>p.f===i);
+    const card=wsCardEl({
+      label:wsName(ws,i), count:mine.length,
+      actions:[
+        {icon:'✎', title:T('tipRename'), run:()=>wsBeginRename(ws,card,i)},
+        {icon:SVG.trash, title:T('tipRemove'), danger:true, run:()=>wsRemoveFile(ws,i)}
+      ]
+    });
+    card.dataset.i=i; card.draggable=ws.multi;
+    if(ws.multi){
+      card.addEventListener('dragstart',()=>card.classList.add('dragging'));
+      card.addEventListener('dragend',()=>{ card.classList.remove('dragging');
+        wsReorderFiles(ws,[...box.children].map(el=>+el.dataset.i)); });
+      card.addEventListener('dragover',e=>{ e.preventDefault();
+        const d=box.querySelector('.dragging'); if(!d||d===card) return;
+        const r=card.getBoundingClientRect();
+        box.insertBefore(d,(e.clientX>r.left+r.width/2)?card.nextSibling:card); });
+    }
+    box.appendChild(card);
+    wsFillCard(card, wsFirstPageOf(ws,i));
+  });
+}
+// Swap the name tag for a text box. Enter/blur commits, Escape abandons. Dragging is
+// suspended while editing, otherwise the card moves out from under the caret.
+function wsBeginRename(ws, card, i){
+  if(card.querySelector('input.rename')) return;
+  const tag=card.querySelector('.fname');
+  const inp=document.createElement('input');
+  inp.type='text'; inp.className='rename'; inp.value=wsName(ws,i);
+  const wasDraggable=card.draggable; card.draggable=false;
+  let done=false;
+  const finish=commit=>{
+    if(done) return; done=true;
+    card.draggable=wasDraggable;
+    if(commit){ ws.names=ws.names||[]; ws.names[i]=safeName(inp.value,'.pdf'); }
+    wsRender(ws);
+  };
+  inp.onkeydown=e=>{
+    if(e.key==='Enter'){ e.preventDefault(); finish(true); }
+    if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); finish(false); }
+  };
+  inp.onblur=()=>finish(true);
+  tag.replaceWith(inp);
+  inp.focus(); inp.select();
+}
+
+// ---- Groups view ---------------------------------------------------------
+// One stacked card per file the split will produce.
+function wsRenderGroups(ws){
+  const box=ws.el.groups; if(!box) return;
+  box.innerHTML='';
+  let seg;
+  try{ seg=wsSegments(ws); }
+  catch(e){ box.innerHTML='<p class="hint" style="margin:0">'+msgOf(e)+'</p>'; return; }
+  if(!seg.groups.length){ box.innerHTML='<p class="hint" style="margin:0">'+T('wsNoGroups')+'</p>'; return; }
+  seg.groups.forEach((g,gi)=>{
+    const card=wsCardEl({ label:T('wsGroupName')({n:gi+1,label:g.label}), count:g.pages.length });
+    box.appendChild(card);
+    wsFillCard(card, g.pages[0]);
+  });
+}
+
+// Reordering files rewrites every page's file index, so page-level edits survive.
+function wsReorderFiles(ws, order){
+  const files=order.map(i=>ws.files[i]), bytes=order.map(i=>ws.bytes[i]),
+        docs=order.map(i=>ws.docs[i]), names=order.map(i=>ws.names[i]);
+  const pages=[];
+  order.forEach((oldIdx,newIdx)=>{
+    ws.pages.filter(p=>p.f===oldIdx).forEach(p=>pages.push(Object.assign({},p,{f:newIdx})));
+  });
+  ws.files=files; ws.bytes=bytes; ws.docs=docs; ws.names=names; ws.pages=pages;
+  wsRender(ws);
+}
+function wsRemoveFile(ws, i){
+  ws.files.splice(i,1); ws.bytes.splice(i,1); ws.names.splice(i,1);
+  const d=ws.docs.splice(i,1)[0]; if(d) Promise.resolve(d.destroy()).catch(()=>{});
+  ws.pages = ws.pages.filter(p=>p.f!==i).map(p=>p.f>i?Object.assign({},p,{f:p.f-1}):p);
+  ws.built = ws.pages.filter(p=>p.thumb).length;
+  if(!ws.files.length){ wsClear(ws); wsRender(ws); return; }
+  wsRender(ws);
+}
+
+// ---- Pages view ----------------------------------------------------------
+// Which pages the Pages view lays out. With something in the range box the view narrows
+// to exactly the pages those ranges address, so it previews the scope of the split; with
+// the box empty it shows the whole file. An unparseable range falls back to showing
+// everything rather than blanking the view.
+function wsVisiblePages(ws){
+  const box=$('#splitRanges');
+  const spec=((ws.cuts && box && box.value) || '').trim();
+  if(!spec) return {pages:ws.pages, filtered:false, spec:''};
+  const keep=wsKept(ws);
+  let idx;
+  try{ idx=parseRanges(spec, keep.length); }
+  catch(_){ return {pages:ws.pages, filtered:false, spec:spec, bad:true}; }
+  const set=new Set(idx.map(i=>keep[i]).filter(Boolean));
+  return {pages:ws.pages.filter(p=>set.has(p)), filtered:true, spec:spec};
+}
+// Page ranges count kept pages only, so the number on a card has to be its position in
+// that list -- a deleted page must not consume a number, or "1-3" would address
+// something other than the pages labelled 1, 2 and 3.
+function wsPageNo(ws, pg){
+  const i=wsKept(ws).indexOf(pg);
+  return i<0 ? '—' : String(i+1);
+}
+// ---- selecting several page tiles at once --------------------------------
+// ws.sel holds page OBJECTS, not indices, so a selection survives reordering and
+// re-rendering. Three ways in: Ctrl/Cmd+click toggles one, Shift+click takes a run
+// from the last one clicked, and dragging a rectangle over the grid picks up
+// everything it touches. Selection is only offered when the view is not narrowed by
+// a range, because deleting is locked in that mode anyway.
+function wsSelToggle(ws, pg){
+  if(ws.sel.has(pg)) ws.sel.delete(pg); else ws.sel.add(pg);
+  ws.selAnchor=pg;
+}
+function wsSelRange(ws, pg){
+  const list=wsVisiblePages(ws).pages;
+  const a=list.indexOf(ws.selAnchor), b=list.indexOf(pg);
+  if(a<0||b<0){ ws.sel.add(pg); ws.selAnchor=pg; return; }
+  const [lo,hi]=a<b?[a,b]:[b,a];
+  for(let i=lo;i<=hi;i++) ws.sel.add(list[i]);
+}
+function wsSelOnly(ws, pg){ ws.sel.clear(); if(pg) ws.sel.add(pg); ws.selAnchor=pg||null; }
+function wsSelClear(ws){ ws.sel.clear(); ws.selAnchor=null; }
+
+// Mirrors what the single trash button does: if every selected page is already
+// marked, this restores them; otherwise it marks them all.
+function wsDeleteSelected(ws){
+  if(!ws.sel.size) return;
+  const allGone=[...ws.sel].every(p=>p.del);
+  ws.sel.forEach(p=>{ p.del=!allGone; });
+  wsSelClear(ws);
+  wsRenderPages(ws); wsStatus(ws); wsSyncButtons(ws);
+}
+function wsRenderSelBar(ws){
+  const bar=ws.el.selbar; if(!bar) return;
+  const n=ws.sel.size;
+  if(!n || ws.view!=='pages'){ bar.style.display='none'; bar.innerHTML=''; return; }
+  bar.style.display='flex';
+  bar.innerHTML='<span class="n"></span>'+
+    '<button class="btn sm" data-a="del"></button>'+
+    '<button class="btn ghost sm" data-a="clear"></button>';
+  bar.querySelector('.n').textContent=T('selCount')(n);
+  const del=bar.querySelector('[data-a="del"]'), clr=bar.querySelector('[data-a="clear"]');
+  del.textContent = [...ws.sel].every(p=>p.del) ? T('selRestore') : T('selDelete');
+  del.onclick=()=>wsDeleteSelected(ws);
+  clr.textContent=T('selClear');
+  clr.onclick=()=>{ wsSelClear(ws); wsRenderPages(ws); wsStatus(ws); };
+}
+// Drag a rectangle across the grid. Starting on blank space is enough; starting on a
+// card needs Ctrl held, otherwise the press belongs to drag-to-reorder.
+function wsWireMarquee(ws){
+  const box=ws.el.grid;
+  if(box._marquee) return; box._marquee=true;
+  let el=null, sx=0, sy=0, base=null, moved=false;
+  const rectOf=e=>{
+    const r=box.getBoundingClientRect();
+    const x1=Math.min(sx,e.clientX), x2=Math.max(sx,e.clientX);
+    const y1=Math.min(sy,e.clientY), y2=Math.max(sy,e.clientY);
+    return { x1,y1,x2,y2, left:x1-r.left, top:y1-r.top, w:x2-x1, h:y2-y1 };
+  };
+  box.addEventListener('mousedown', e=>{
+    if(e.button!==0) return;
+    if(e.target.closest('.bar') || e.target.closest('.cutgap')) return;
+    if(wsVisiblePages(ws).filtered) return;              // editing locked
+    const card=e.target.closest('.pcard');
+    const mod=e.ctrlKey||e.metaKey;
+    if(card && !mod) return;                             // leave it to the reorder drag
+    e.preventDefault();
+    sx=e.clientX; sy=e.clientY; moved=false;
+    base = mod ? new Set(ws.sel) : new Set();
+    el=document.createElement('div'); el.className='marquee';
+    box.appendChild(el); box.classList.add('marqueeing');
+  });
+  window.addEventListener('mousemove', e=>{
+    if(!el) return;
+    const r=rectOf(e);
+    if(r.w>3||r.h>3) moved=true;
+    el.style.left=r.left+'px'; el.style.top=r.top+'px';
+    el.style.width=r.w+'px'; el.style.height=r.h+'px';
+    const hit=new Set(base);
+    box.querySelectorAll('.pcard').forEach(c=>{
+      const b=c.getBoundingClientRect();
+      if(b.right>=r.x1 && b.left<=r.x2 && b.bottom>=r.y1 && b.top<=r.y2){
+        const pg=ws.pages[+c.dataset.i]; if(pg) hit.add(pg);
+      }
+    });
+    ws.sel=hit;
+    // repaint the tint without rebuilding the DOM, so dragging stays smooth
+    box.querySelectorAll('.pcard').forEach(c=>{
+      c.classList.toggle('sel', ws.sel.has(ws.pages[+c.dataset.i]));
+    });
+    // Only refresh the bar if it is already on screen: letting it appear mid-drag would
+    // push the grid down and the rectangle would jump away from the cursor.
+    if(ws.el.selbar && ws.el.selbar.style.display==='flex') wsRenderSelBar(ws);
+  });
+  window.addEventListener('mouseup', ()=>{
+    if(!el) return;
+    el.remove(); el=null;
+    box.classList.remove('marqueeing');
+    // Swallow only the click the browser fires right after this drag. Clearing it on
+    // the next tick matters: left set, it would eat an unrelated click much later.
+    if(moved){ box._eatClick=true; setTimeout(()=>{ box._eatClick=false; },0); }
+    wsRenderPages(ws); wsStatus(ws);
+  });
+  // a click on blank grid space clears, unless a drag just finished there
+  box.addEventListener('click', e=>{
+    if(box._eatClick){ box._eatClick=false; return; }
+    if(e.target.closest('.pcard')||e.target.closest('.cutgap')) return;
+    if(!ws.sel.size) return;
+    wsSelClear(ws); wsRenderPages(ws); wsStatus(ws);
+  });
+}
+function wsRenderPages(ws){
+  const box=ws.el.grid; box.innerHTML='';
+  const vis=wsVisiblePages(ws);
+  const list=vis.pages;
+  // a narrowed view hides pages, so a selection made before it would be invisible
+  if(vis.filtered && ws.sel.size) wsSelClear(ws);
+  list.forEach((pg,n)=>{
+    box.appendChild(wsCard(ws, pg, ws.pages.indexOf(pg), !vis.filtered));
+    // Scissors only make sense with the whole file on screen: once ranges are typed the
+    // ranges define the grouping and cuts are ignored, so don't offer them.
+    if(ws.cuts && !vis.filtered && n<list.length-1) box.appendChild(wsGap(ws,pg));
+  });
+  list.forEach(pg=>wsPaint(ws,pg));
+  if(!vis.filtered) wsWireMarquee(ws);
+  wsRenderSelBar(ws);
+}
+// `full` is false while the view is narrowed by a range. Reordering, duplicating and
+// deleting all shift the numbering that those ranges refer to, so they are held back
+// until the box is cleared; rotate and preview are safe and stay live.
+function wsCard(ws, pg, i, full){
+  const c=document.createElement('div');
+  const picked=ws.sel.has(pg);
+  c.className='pcard'+(pg.del?' del':'')+(picked?' sel':'');
+  c.draggable=!!full && !pg.del; c.dataset.i=i;
+  const lock=T('tipLockedByRange');
+  const delTitle = full ? (picked && ws.sel.size>1 ? T('tipDelMany')({n:ws.sel.size}) : T('tipDel')) : lock;
+  c.innerHTML=
+    '<div class="bar">'+
+      '<button data-a="zoom" title="'+T('tipPreview')+'">'+SVG.zoom+'</button>'+
+      '<button data-a="rot" title="'+T('tipRotate')+'">'+SVG.rotate+'</button>'+
+      '<button data-a="dup"'+(full?'':' disabled title="'+lock+'"')+(full?' title="'+T('tipDup')+'"':'')+'>'+SVG.dup+'</button>'+
+      '<button data-a="del" class="danger"'+(full?'':' disabled')+' title="'+delTitle+'">'+SVG.trash+'</button>'+
+    '</div>'+
+    '<span class="tick">&#10003;</span>'+
+    (pg.rot?'<span class="rotbadge">'+pg.rot+'&deg;</span>':'')+
+    '<div class="sheet"><span class="ph"></span></div>'+
+    '<span class="fname"></span>'+
+    '<span class="pno">'+wsPageNo(ws,pg)+'</span>';
+  c.querySelector('.fname').textContent = wsName(ws,pg.f);
+  c.querySelectorAll('.bar button').forEach(b=>b.onclick=e=>{
+    e.stopPropagation();
+    if(b.disabled) return;
+    const a=b.dataset.a;
+    if(a==='rot'){ pg.rot=(pg.rot+90)%360; wsRenderPages(ws); }
+    if(a==='del'){
+      // the trash on a selected tile acts on the whole selection, not just this one
+      if(ws.sel.has(pg) && ws.sel.size>1){ wsDeleteSelected(ws); return; }
+      pg.del=!pg.del; wsRenderPages(ws); wsStatus(ws); wsSyncButtons(ws);
+    }
+    if(a==='dup'){ const at=ws.pages.indexOf(pg);
+      ws.pages.splice(at+1,0,Object.assign({},pg,{cut:false}));
+      ws.built++; wsRenderPages(ws); wsStatus(ws); wsSyncButtons(ws); }
+    if(a==='zoom') wsPreview(ws,pg);
+  });
+  if(full){
+    c.addEventListener('click',e=>{
+      if(e.target.closest('.bar')) return;
+      if(ws.el.grid._eatClick){ ws.el.grid._eatClick=false; return; }
+      if(e.ctrlKey||e.metaKey) wsSelToggle(ws,pg);
+      else if(e.shiftKey && ws.selAnchor) wsSelRange(ws,pg);
+      else wsSelOnly(ws, ws.sel.size===1 && ws.sel.has(pg) ? null : pg);
+      wsRenderPages(ws); wsStatus(ws);
+    });
+    // Ctrl is the gesture for rubber-band selecting, so don't let it start a reorder
+    c.addEventListener('dragstart',e=>{
+      if(e.ctrlKey||e.metaKey){ e.preventDefault(); return; }
+      c.classList.add('dragging');
+    });
+    c.addEventListener('dragend',()=>{
+      c.classList.remove('dragging');
+      // Reading the DOM order back is only safe while every page is on screen -- on a
+      // narrowed view the hidden pages would be dropped from ws.pages entirely.
+      ws.pages=[...ws.el.grid.querySelectorAll('.pcard')].map(el=>ws.pages[+el.dataset.i]);
+      wsRenderPages(ws); wsStatus(ws);
+    });
+    c.addEventListener('dragover',e=>{
+      e.preventDefault(); const d=ws.el.grid.querySelector('.dragging'); if(!d||d===c) return;
+      const r=c.getBoundingClientRect();
+      ws.el.grid.insertBefore(d,(e.clientX>r.left+r.width/2)?c.nextSibling:c);
+    });
+  }
+  return c;
+}
+function wsGap(ws, pg){
+  const g=document.createElement('button');
+  g.className='cutgap'+(pg.cut?' on':''); g.type='button';
+  g.title=pg.cut?T('tipCutOn'):T('tipCut');
+  g.innerHTML='<span class="sc">'+SVG.scissors+'</span>';
+  g.onclick=()=>{ pg.cut=!pg.cut; wsRenderPages(ws); wsStatus(ws); wsSyncButtons(ws); };
+  return g;
+}
+function wsPaint(ws, pg){
+  if(ws.view!=='pages') return;
+  const i=ws.pages.indexOf(pg); if(i<0) return;
+  const box=ws.el.grid.querySelector('.pcard[data-i="'+i+'"] .sheet'); if(!box) return;
+  if(pg.thumb==='fail'){
+    box.innerHTML='<span style="font-size:11.5px;color:var(--muted);text-align:center">'+T('orgThumbFail')+'</span>';
+  }else if(pg.thumb){
+    const img=document.createElement('img');
+    img.src=pg.thumb; img.draggable=false; img.alt=T('page')(i+1);
+    img.style.transform='rotate('+pg.rot+'deg)';
+    box.innerHTML=''; box.appendChild(img);
+  }
+}
+
+// ---- page preview modal --------------------------------------------------
+async function wsPreview(ws, pg){
+  const m=$('#pvModal');
+  $('#pvTitle').textContent=wsName(ws,pg.f)+' — '+T('page')(pg.p+1);
+  m.classList.add('show');
+  try{
+    const doc=await wsDoc(ws,pg.f); const page=await doc.getPage(pg.p+1);
+    const base=page.getViewport({scale:1});
+    const vp=page.getViewport({scale:Math.min(1400/base.width,2.2), rotation:(base.rotation+pg.rot)%360});
+    const cv=$('#pvCanvas'); cv.width=Math.ceil(vp.width); cv.height=Math.ceil(vp.height);
+    await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+  }catch(_){ /* leave the canvas blank rather than tearing the modal down */ }
+}
+function wsPreviewClose(){
+  $('#pvModal').classList.remove('show');
+  const cv=$('#pvCanvas'); cv.getContext('2d').clearRect(0,0,cv.width,cv.height);
+}
+$('#pvClose').onclick=wsPreviewClose;
+$('#pvModal').onclick=e=>{ if(e.target===$('#pvModal')) wsPreviewClose(); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') wsPreviewClose(); });
+// Escape clears a page selection, Delete removes it. Ignored while typing in a field
+// or while the preview modal is up, so neither steals a keystroke that meant something
+// else. Acts on whichever tab is on screen.
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape' && e.key!=='Delete') return;
+  const t=e.target;
+  if(t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT'||t.isContentEditable)) return;
+  if($('#pvModal').classList.contains('show')) return;
+  const tab=document.querySelector('.navitem.active');
+  const ws=tab && WS[tab.dataset.tab];
+  if(!ws || !ws.sel || !ws.sel.size || ws.view!=='pages') return;
+  e.preventDefault();
+  if(e.key==='Delete') wsDeleteSelected(ws);
+  else { wsSelClear(ws); wsRenderPages(ws); wsStatus(ws); }
+});
+
+// ---- export helpers ------------------------------------------------------
+// Copy a run of workspace pages into a fresh document, honouring rotation.
+async function wsBuild(ws, pages){
+  const out=await PDFDocument.create();
+  const srcCache=new Map();
+  for(const pg of pages){
+    if(!srcCache.has(pg.f)) srcCache.set(pg.f, await PDFDocument.load(ws.bytes[pg.f]));
+    const [copy]=await out.copyPages(srcCache.get(pg.f), [pg.p]);
+    if(pg.rot) copy.setRotation(degrees((copy.getRotation().angle+pg.rot)%360));
+    out.addPage(copy);
+  }
+  return out;
+}
+function wsKept(ws){ return ws.pages.filter(p=>!p.del); }
+function wsSyncButtons(ws){
+  const has=wsKept(ws).length>0;
+  if(ws.tab==='merge'){ $('#mergeGo').disabled=!has; return; }
+  if(ws.tab==='organize'){ $('#organizeGo').disabled=!has; return; }
+  $('#splitGo').disabled=!has; $('#splitEach').disabled=!has;
+  // enabled by an armed scissors OR by anything typed in the range box
+  const spec=($('#splitRanges').value||'').trim();
+  $('#splitCut').disabled = !has || (wsCutCount(ws)===0 && !spec);
+}
+
+// ===== MERGE =====
+WS.merge = makeWS('merge', {multi:true, cuts:false});
+wireDrop('#mergeDrop','#mergeInput', fs=>wsAddFiles(WS.merge, fs));
+$('#mergeGo').onclick=async()=>{
+  const ws=WS.merge; busy($('#mergeGo'),true);
+  try{
+    const keep=wsKept(ws);
+    if(!keep.length) throw fail('e_ws_empty');
+    const out=await wsBuild(ws, keep);
+    const blob=new Blob([await out.save()],{type:'application/pdf'});
+    showResult('#mergeResult',true,T('okMerge'),
+      T('okMergeMeta')({pages:keep.length,merged:ws.files.length,skipped:[]}),
+      blob,$('#mergeName').value||'merged.pdf');
+  }catch(e){ showResult('#mergeResult',false,T('errMerge'),msgOf(e)); }
+  finally{ busy($('#mergeGo'),false); }
+};
+
+// ===== SPLIT =====
+WS.split = makeWS('split', {multi:true, cuts:true});
+wireDrop('#splitDrop','#splitInput', fs=>wsAddFiles(WS.split, fs));
+// The range box now feeds the Groups preview too, so refresh as it is typed.
+$('#splitRanges').oninput=()=>{
+  const ws=WS.split;
+  if(!ws.files.length) return;
+  if(ws.view==='groups') wsRenderGroups(ws);
+  else if(ws.view==='pages') wsRenderPages(ws);   // the range also narrows the Pages view
+  wsStatus(ws); wsSyncButtons(ws);
+};
+$('#splitGo').onclick=async()=>{
+  const ws=WS.split; busy($('#splitGo'),true);
+  try{ const keep=wsKept(ws);
+    const idx=parseRanges($('#splitRanges').value, keep.length);
+    const out=await wsBuild(ws, idx.map(i=>keep[i]));
+    const blob=new Blob([await out.save()],{type:'application/pdf'});
+    showResult('#splitResult',true,T('okSplit'),T('okSplitMeta')(idx.length),blob,wsOutStem(ws)+"_extract.pdf");
+  }catch(e){ showResult('#splitResult',false,T('errSplit'),msgOf(e)); }
+  finally{ busy($('#splitGo'),false); }
+};
+// Exports exactly what the Groups view previews: ranges if the box has any, cuts otherwise.
+$('#splitCut').onclick=async()=>{
+  const ws=WS.split; busy($('#splitCut'),true);
+  try{
+    if(!wsKept(ws).length) throw fail('e_ws_empty');
+    const seg=wsSegments(ws);
+    // one group from cuts means no cut was armed; from ranges it is a deliberate ask
+    if(!seg.groups.length || (seg.mode==='cuts' && seg.groups.length<2)) throw fail('e_no_groups');
+    const zip=new JSZip();
+    const stem=wsOutStem(ws);
+    let pages=0;
+    for(let s=0;s<seg.groups.length;s++){
+      const g=seg.groups[s];
+      const out=await wsBuild(ws, g.pages);
+      pages+=g.pages.length;
+      zip.file(stem+'_part_'+String(s+1).padStart(2,'0')+'_p'+g.label+'.pdf', await out.save());
+    }
+    const blob=await zip.generateAsync({type:'blob'});
+    showResult('#splitResult',true,T('okSplitCut'),
+      T('okSplitCutMeta')({parts:seg.groups.length,pages}),blob,stem+'_parts.zip');
+  }catch(e){ showResult('#splitResult',false,T('errSplit'),msgOf(e)); }
+  finally{ busy($('#splitCut'),false); }
+};
+$('#splitEach').onclick=async()=>{
+  const ws=WS.split; busy($('#splitEach'),true);
+  try{ const keep=wsKept(ws); const zip=new JSZip();
+    const stem=wsOutStem(ws);
+    for(let i=0;i<keep.length;i++){
+      const out=await wsBuild(ws,[keep[i]]);
+      const pg=keep[i];
+      // with several sources, the entry has to say which file and which page inside it
+      const name = ws.files.length===1
+        ? stem+'_page_'+String(i+1).padStart(3,'0')+'.pdf'
+        : String(i+1).padStart(3,'0')+'_'+wsStem(ws,pg.f)+'_p'+(pg.p+1)+'.pdf';
+      zip.file(name, await out.save()); }
+    const blob=await zip.generateAsync({type:'blob'});
+    showResult('#splitResult',true,T('okSplitEach'),T('okSplitEachMeta')(keep.length),blob,stem+'_pages.zip');
+  }catch(e){ showResult('#splitResult',false,T('errSplit'),msgOf(e)); }
+  finally{ busy($('#splitEach'),false); }
+};
+// ===== ORGANIZE =====
+// Organize is the page workspace with the scissors turned off: load one or more PDFs,
+// reorder / rotate / duplicate / delete pages across all of them, export one document.
+WS.organize = makeWS('organize', {multi:true, cuts:false});
+wireDrop('#organizeDrop','#organizeInput', fs=>wsAddFiles(WS.organize, fs));
+$('#organizeGo').onclick=async()=>{
+  const ws=WS.organize; busy($('#organizeGo'),true);
+  try{
+    const keep=wsKept(ws);
+    if(!keep.length) throw fail('e_no_keep');
+    const out=await wsBuild(ws, keep);
+    const blob=new Blob([await out.save()],{type:'application/pdf'});
+    showResult('#organizeResult',true,T('okOrg'),T('okOrgMeta')(keep.length),
+      blob, (ws.files.length===1 ? wsStem(ws,0)+'_organized' : 'organized')+'.pdf');
+  }catch(e){ showResult('#organizeResult',false,T('errOrg'),msgOf(e)); }
+  finally{ busy($('#organizeGo'),false); }
+};
+// ===== CONVERT: images -> PDF =====
+let toPdfFiles=[];
+wireDrop('#toPdfDrop','#toPdfInput', fs=>{ toPdfFiles.push(...fs); const ul=$('#toPdfList'); ul.innerHTML='';
+  toPdfFiles.forEach((f,i)=>{const li=document.createElement('li');li.innerHTML=`<span class="idx">${i+1}</span><span class="name">${f.name}</span>`;ul.appendChild(li)});
+  $('#toPdfGo').disabled=toPdfFiles.length===0; });
+$('#toPdfGo').onclick=async()=>{
+  busy($('#toPdfGo'),true);
+  try{ const out=await PDFDocument.create();
+    for(const f of toPdfFiles){ const ext=(f.name.split('.').pop()||'').toLowerCase(); const b=await bytesOf(f);
+      let img; if(ext==='png') img=await out.embedPng(b); else if(ext==='jpg'||ext==='jpeg') img=await out.embedJpg(b);
+      else throw fail('e_img',{file:f.name});
+      const pg=out.addPage([img.width,img.height]); pg.drawImage(img,{x:0,y:0,width:img.width,height:img.height}); }
+    const blob=new Blob([await out.save()],{type:'application/pdf'});
+    showResult('#toPdfResult',true,T('okToPdf'),T('okToPdfMeta')(toPdfFiles.length),blob,'images.pdf');
+  }catch(e){ showResult('#toPdfResult',false,T('errConv'),msgOf(e)); }
+  finally{ busy($('#toPdfGo'),false); }
+};
+
+// ===== CONVERT: PDF -> images (pdf.js) =====
+let fromFiles=[];
+wireDrop('#fromPdfDrop','#fromPdfInput', fs=>{
+  fromFiles.push(...fs.filter(f=>/\.pdf$/i.test(f.name)));
+  renderFromList();
+  $('#fromResult').className='result'; $('#fromResult').innerHTML='';
+  $('#fromInfo').textContent='';
+});
+function renderFromList(){
+  const ul=$('#fromPdfList'); ul.innerHTML='';
+  fromFiles.forEach((f,i)=>{
+    const li=document.createElement('li');
+    li.innerHTML='<span class="idx">'+(i+1)+'</span><span class="name"></span><button class="x">&#10005;</button>';
+    li.querySelector('.name').textContent=f.name;      // untrusted filename text
+    li.querySelector('.x').onclick=()=>{ fromFiles.splice(i,1); renderFromList(); };
+    ul.appendChild(li);
+  });
+  $('#fromGo').disabled = fromFiles.length===0;
+}
+$('#fromGo').onclick=async()=>{
+  if(!fromFiles.length) return;
+  busy($('#fromGo'),true);
+  try{
+    const zip=new JSZip(); const scale=150/72; let pages=0;
+    const many=fromFiles.length>1;
+    for(let fi=0; fi<fromFiles.length; fi++){
+      const f=fromFiles[fi];
+      $('#fromInfo').textContent=T('cmpWorking')({done:fi+1,total:fromFiles.length,name:f.name});
+      const stem=(f.name||'file').replace(/\.pdf$/i,'');
+      const pdf=await pdfjsLib.getDocument({data:await bytesOf(f)}).promise;
+      try{
+        for(let i=1;i<=pdf.numPages;i++){
+          const page=await pdf.getPage(i);
+          const vp=page.getViewport({scale});
+          const canvas=document.createElement('canvas');
+          canvas.width=Math.ceil(vp.width); canvas.height=Math.ceil(vp.height);
+          await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+          const b=await new Promise(r=>canvas.toBlob(r,'image/png'));
+          // with several PDFs the file index keeps entries unique even if two share a name
+          const name = many
+            ? String(fi+1).padStart(2,'0')+'_'+stem+'_page_'+String(i).padStart(3,'0')+'.png'
+            : stem+'_page_'+String(i).padStart(3,'0')+'.png';
+          zip.file(name, b);
+          pages++;
+        }
+      } finally { Promise.resolve(pdf.destroy()).catch(()=>{}); }
+      await new Promise(r=>setTimeout(r,0));
+    }
+    const blob=await zip.generateAsync({type:'blob'});
+    const stem1=(fromFiles[0].name||'file').replace(/\.pdf$/i,'');
+    showResult('#fromResult',true,T('okFrom'),T('okFromMeta')(pages),blob,
+      (many?'images':stem1+'_images')+'.zip');
+    $('#fromInfo').textContent='';
+  }catch(e){
+    showResult('#fromResult',false,T('errConv'),msgOf(e&&e.code?e:fail('e_read')));
+    $('#fromInfo').textContent='';
+  }
+  finally{ busy($('#fromGo'),false); }
+};
+
+// ===== OCR -> SEARCHABLE PDF ===============================================
+// Tesseract (WASM) reads each page image and returns word boxes; we copy the
+// ORIGINAL page unchanged and lay invisible text over it. The scan is never
+// re-encoded, so quality and file size are untouched and the page just becomes
+// searchable. Everything is local — lib/tess/ holds the engine and language data.
+//
+// Requires an http(s) origin: the engine runs in a Web Worker, which browsers
+// refuse to start from a file:// page.
+let ocrFile=null, ocrBytes=null, ocrWorker=null, ocrLang=null, ocrAbort=false;
+const OCR_MIN_CONF = 40;   // drop words Tesseract is very unsure about
+const OCR_TEXT_MIN = 12;   // chars on a page before we call it "already has text"
+
+wireDrop('#ocrDrop','#ocrInput', async fs=>{
+  const f=fs&&fs[0]; if(!f) return;
+  ocrFile=f; ocrBytes=null;
+  $('#ocrInfo').textContent=T('selected')(f.name);
+  $('#ocrResult').className='result'; $('#ocrResult').innerHTML='';
+  $('#ocrStatus').textContent=''; ocrProgress(null);
+  $('#ocrGo').disabled=false;
+});
+
+function ocrProgress(frac){
+  const box=$('#ocrProg'), bar=$('#ocrBar');
+  if(frac===null||frac===undefined){ box.classList.remove('on'); bar.style.width='0'; return; }
+  box.classList.add('on'); bar.style.width=Math.max(0,Math.min(1,frac))*100+'%';
+}
+// tesseract.min.js is only pulled in the first time OCR is actually used, so the
+// other tabs stay light. It is a local file, not a network call.
+function ocrLoadLib(){
+  if(window.Tesseract) return Promise.resolve();
+  return new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src='lib/tess/tesseract.min.js';
+    s.onload=()=>window.Tesseract?res():rej(fail('e_ocr_lib'));
+    s.onerror=()=>rej(fail('e_ocr_lib'));
+    document.head.appendChild(s);
+  });
+}
+async function ocrGetWorker(lang){
+  if(ocrWorker && ocrLang===lang) return ocrWorker;
+  if(ocrWorker){ try{ await ocrWorker.terminate(); }catch(_){} ocrWorker=null; }
+  try{
+    // oem 1 = LSTM only, which is why only the *-lstm cores are vendored
+    ocrWorker=await Tesseract.createWorker(lang, 1, {
+      workerPath:'lib/tess/worker.min.js',
+      corePath:'lib/tess',
+      langPath:'lib/tess',
+      logger:m=>{ if(m&&m.status==='loading tesseract core') $('#ocrStatus').textContent=T('ocrLoadEngine'); }
+    });
+  }catch(e){ throw fail('e_ocr_worker'); }
+  ocrLang=lang;
+  return ocrWorker;
+}
+// Vietnamese needs a real Unicode font in the invisible layer. pdf-lib's built-in
+// Helvetica is WinAnsi-encoded and simply cannot represent ế ạ ữ …, so for any
+// language other than plain English we embed DejaVu Sans through fontkit. It is
+// subset on embed, so only the glyphs actually used ride along in the output.
+let ocrFontBytes=null;
+function ocrLoadScript(src, ok, code){
+  if(ok()) return Promise.resolve();
+  return new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src=src; s.onload=()=>ok()?res():rej(fail(code)); s.onerror=()=>rej(fail(code));
+    document.head.appendChild(s);
+  });
+}
+// Loads the local .ttf that ships in lib/fonts — a bundled asset, not a service call.
+async function ocrEmbedUnicodeFont(out){
+  await ocrLoadScript('lib/fontkit.umd.min.js', ()=>window.fontkit, 'e_ocr_font');
+  out.registerFontkit(window.fontkit);
+  if(!ocrFontBytes){
+    let r; try{ r=await fetch('lib/fonts/DejaVuSans.ttf'); }catch(_){ throw fail('e_ocr_font'); }
+    if(!r.ok) throw fail('e_ocr_font');
+    ocrFontBytes=await r.arrayBuffer();
+  }
+  try{ return await out.embedFont(ocrFontBytes,{subset:true}); }
+  catch(_){ throw fail('e_ocr_font'); }
+}
+// With Helvetica anything outside Latin-1 has to go, or drawText throws and the whole
+// page is lost. With the Unicode font we keep everything and let the per-word
+// try/catch handle a glyph the font lacks — those are counted, never silently dropped.
+function ocrSafeText(t, unicode){
+  let s=String(t||'').replace(/[\u0000-\u001F\u007F]/g,'');
+  if(!unicode) s=s.replace(/[^\u0020-\u00FF]/g,'');
+  return s.trim();
+}
+// Map Tesseract's word boxes (pixels, y down, page shown upright) into the PDF's
+// unrotated user space (points, y up), compensating for the page's own /Rotate.
+// A viewer applies /Rotate to image and text alike, so both must live in the same
+// unrotated space or the text layer drifts off the words.
+function ocrDrawLayer(P, words, s, font, unicode, tally){
+  const r=((P.getRotation().angle%360)+360)%360;
+  const W=P.getWidth(), H=P.getHeight();
+  const Hu=(r%180===0)?H:W;                   // height of the upright view, in points
+  let n=0;
+  for(const w of (words||[])){
+    if((w.confidence||0)<OCR_MIN_CONF) continue;
+    const t=ocrSafeText(w.text, unicode); if(!t) continue;
+    const b=w.bbox; if(!b) continue;
+    const x0=b.x0/s, x1=b.x1/s, y0=b.y0/s, y1=b.y1/s;   // upright points, y from top
+    const bw=x1-x0; let fs=Math.max(1,y1-y0);
+    const tw=font.widthOfTextAtSize(t,fs);              // squeeze to the word's box
+    if(tw>0 && bw>0 && tw>bw*1.05) fs=Math.max(1,fs*(bw/tw));
+    const bx=x0, by=Hu-y1;                              // upright baseline, y up
+    let px,py,rot;
+    if(r===90){ px=W-by; py=bx;   rot=90; }
+    else if(r===180){ px=W-bx; py=H-by; rot=180; }
+    else if(r===270){ px=by;   py=H-bx; rot=270; }
+    else { px=bx; py=by; rot=0; }
+    try{ P.drawText(t,{x:px,y:py,size:fs,font,opacity:0,rotate:degrees(rot)}); n++; }
+    catch(_){ if(tally) tally.dropped++; }   // a glyph the font lacks: skip the word, keep the page
+  }
+  return n;
+}
+
+$('#ocrStop').onclick=()=>{ ocrAbort=true; $('#ocrStatus').textContent=T('working'); };
+
+$('#ocrGo').onclick=async()=>{
+  if(!ocrFile) return;
+  ocrAbort=false;
+  busy($('#ocrGo'),true); $('#ocrStop').style.display='inline-flex';
+  $('#ocrResult').className='result'; $('#ocrResult').innerHTML='';
+  const dpi=+$('#ocrDpi').value || 300, s=dpi/72;
+  const lang=$('#ocrLang').value || 'eng';
+  const skipTexty=$('#ocrSkip').checked;
+  let doc=null;
+  try{
+    $('#ocrStatus').textContent=T('ocrLoadEngine'); ocrProgress(0);
+    await ocrLoadLib();
+    const worker=await ocrGetWorker(lang);
+
+    if(!ocrBytes) ocrBytes=await bytesOf(ocrFile);
+    const src=await PDFDocument.load(ocrBytes);
+    const out=await PDFDocument.create();
+    // English can ride on built-in Helvetica (nothing embedded); anything else needs
+    // the Unicode font or the diacritics would be silently thrown away.
+    const unicode = lang!=='eng';
+    const font = unicode ? await ocrEmbedUnicodeFont(out)
+                         : await out.embedFont(StandardFonts.Helvetica);
+    doc=await pdfjsLib.getDocument({data:ocrBytes.slice(0)}).promise;
+
+    const copied=await out.copyPages(src, src.getPageIndices());
+    const total=copied.length;
+    let ocred=0, skipped=0, words=0, empty=0; const tally={dropped:0};
+
+    for(let i=0;i<total;i++){
+      if(ocrAbort) throw fail('e_ocr_cancel');
+      const P=copied[i]; out.addPage(P);
+      const page=await doc.getPage(i+1);
+
+      if(skipTexty){
+        $('#ocrStatus').textContent=T('ocrPageStat')({page:i+1,total,what:T('ocrReading')});
+        const tc=await page.getTextContent();
+        const chars=tc.items.reduce((a,it)=>a+String(it.str||'').trim().length,0);
+        if(chars>=OCR_TEXT_MIN){
+          skipped++; ocrProgress((i+1)/total);
+          $('#ocrStatus').textContent=T('ocrPageStat')({page:i+1,total,what:T('ocrHasText')});
+          continue;
+        }
+      }
+      $('#ocrStatus').textContent=T('ocrPageStat')({page:i+1,total,what:T('ocrRecognising')});
+      // render upright so Tesseract reads it the right way up
+      const rot=((page.rotate||0)%360+360)%360;
+      const vp=page.getViewport({scale:s, rotation:rot});
+      const cv=document.createElement('canvas');
+      cv.width=Math.ceil(vp.width); cv.height=Math.ceil(vp.height);
+      await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+      if(ocrAbort) throw fail('e_ocr_cancel');
+
+      const {data}=await worker.recognize(cv);
+      const added=ocrDrawLayer(P, data&&data.words, s, font, unicode, tally);
+      words+=added; if(added) ocred++; else empty++;
+      ocrProgress((i+1)/total);
+      await new Promise(r=>setTimeout(r,0));
+    }
+
+    if(ocred===0 && skipped===0) throw fail('e_ocr_none');
+    $('#ocrStatus').textContent=T('ocrSaving');
+    const blob=new Blob([await out.save()],{type:'application/pdf'});
+    const stem=(ocrFile.name||'file').replace(/\.pdf$/i,'');
+    showResult('#ocrResult',true,T('okOcr'),T('okOcrMeta')({ocred,skipped,words,empty,dropped:tally.dropped}),
+      blob, stem+'_searchable.pdf');
+    $('#ocrStatus').textContent='';
+  }catch(e){
+    // a deliberate Stop is not a failure — don't label it one
+    const cancelled = e && e.code==='e_ocr_cancel';
+    showResult('#ocrResult',false,cancelled?T('ocrStopped'):T('errOcr'),msgOf(e));
+    $('#ocrStatus').textContent='';
+  }finally{
+    if(doc){ Promise.resolve(doc.destroy()).catch(()=>{}); }
+    ocrProgress(null);
+    $('#ocrStop').style.display='none';
+    busy($('#ocrGo'),false);
+  }
+};
+
+// ===== REDUCE FILE SIZE ====================================================
+// What is actually achievable in a browser, and what is not:
+//
+//   images        re-encode through a canvas as JPEG, optionally scaled down.
+//                 Genuinely effective -- usually 70-90% smaller.
+//   PDF "keep"    copy the pages into a fresh document with object streams on.
+//                 Unused objects fall away, text stays searchable. The saving is
+//                 modest and on a tidy file it is often zero. pdf-lib cannot subset
+//                 fonts or recompress content streams, so nothing more is on offer.
+//   PDF "raster"  render each page with pdf.js and store it as a JPEG. Huge on
+//                 scans, destructive everywhere else: the text becomes a picture.
+//
+// Nothing is ever made worse: if the new bytes are not smaller, the original is
+// passed through and counted as skipped.
+let cmpFiles=[], cmpAbort=false;
+const CMP_OK = /\.(pdf|png|jpe?g)$/i;
+
+function fmtBytes(n){
+  if(n<1024) return n+' B';
+  if(n<1024*1024) return (n/1024).toFixed(0)+' KB';
+  return (n/1024/1024).toFixed(n<10*1024*1024?1:0)+' MB';
+}
+function pctSaved(before, after){
+  if(!before) return '0%';
+  const p=Math.round((1-after/before)*100);   // positive means it got smaller
+  if(p===0) return '0%';
+  return (p>0?'−':'+')+Math.abs(p)+'%';       // −30% saved vs +12% grown
+}
+wireDrop('#compressDrop','#compressInput', fs=>{
+  const ok=fs.filter(f=>CMP_OK.test(f.name));
+  if(!ok.length) return;
+  cmpFiles.push(...ok);
+  cmpRenderList();
+  $('#compressResult').className='result'; $('#compressResult').innerHTML='';
+  $('#compressStatus').textContent=''; cmpProgress(null);
+});
+function cmpRenderList(results){
+  const ul=$('#compressList'); ul.innerHTML='';
+  cmpFiles.forEach((f,i)=>{
+    const r=results && results[i];
+    const li=document.createElement('li');
+    li.innerHTML='<span class="idx">'+(i+1)+'</span><span class="name"></span>'+
+      '<span class="pno"></span><button class="x">&#10005;</button>';
+    li.querySelector('.name').textContent=f.name;       // untrusted filename text
+    li.querySelector('.pno').textContent = T('cmpListRow')({
+      size:fmtBytes(f.size),
+      after:r?fmtBytes(r.size):null,
+      pct:r?pctSaved(f.size,r.size):'' });
+    li.querySelector('.x').onclick=()=>{ cmpFiles.splice(i,1); cmpRenderList(); cmpSync(); };
+    ul.appendChild(li);
+  });
+  cmpSync();
+}
+function cmpSync(){
+  $('#compressGo').disabled = cmpFiles.length===0;
+  const raster = $('#compressMode').value==='raster';
+  $('#compressModeHint').textContent = T(raster?'cmpHintRaster':'cmpHintKeep');
+  $('#compressDpiField').style.visibility = raster ? 'visible' : 'hidden';
+}
+$('#compressMode').onchange=cmpSync;
+function cmpProgress(frac){
+  const box=$('#compressProg'), bar=$('#compressBar');
+  if(frac===null||frac===undefined){ box.classList.remove('on'); bar.style.width='0'; return; }
+  box.classList.add('on'); bar.style.width=Math.max(0,Math.min(1,frac))*100+'%';
+}
+
+// ---- the three compressors ----------------------------------------------
+async function cmpImage(file, q, maxDim){
+  const bmp=await createImageBitmap(file);
+  let w=bmp.width, h=bmp.height;
+  if(maxDim && Math.max(w,h)>maxDim){
+    const s=maxDim/Math.max(w,h); w=Math.round(w*s); h=Math.round(h*s);
+  }
+  const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+  const g=cv.getContext('2d');
+  g.fillStyle='#fff'; g.fillRect(0,0,w,h);   // JPEG has no alpha: flatten onto white
+  g.drawImage(bmp,0,0,w,h);
+  if(bmp.close) bmp.close();
+  const blob=await new Promise(r=>cv.toBlob(r,'image/jpeg',q));
+  return { bytes:new Uint8Array(await blob.arrayBuffer()), ext:'.jpg' };
+}
+async function cmpPdfKeep(bytes){
+  const src=await PDFDocument.load(bytes);
+  const out=await PDFDocument.create();
+  const pages=await out.copyPages(src, src.getPageIndices());
+  pages.forEach(p=>out.addPage(p));
+  return { bytes:await out.save({useObjectStreams:true}), ext:'.pdf' };
+}
+async function cmpPdfRaster(bytes, q, dpi){
+  const doc=await pdfjsLib.getDocument({data:bytes.slice(0)}).promise;
+  try{
+    const out=await PDFDocument.create();
+    const scale=dpi/72;
+    for(let i=1;i<=doc.numPages;i++){
+      if(cmpAbort) throw fail('e_ocr_cancel');
+      const page=await doc.getPage(i);
+      const rot=((page.rotate||0)%360+360)%360;
+      const vp=page.getViewport({scale, rotation:rot});
+      const cv=document.createElement('canvas');
+      cv.width=Math.ceil(vp.width); cv.height=Math.ceil(vp.height);
+      const g=cv.getContext('2d');
+      g.fillStyle='#fff'; g.fillRect(0,0,cv.width,cv.height);
+      await page.render({canvasContext:g, viewport:vp}).promise;
+      const blob=await new Promise(r=>cv.toBlob(r,'image/jpeg',q));
+      const img=await out.embedJpg(await blob.arrayBuffer());
+      // back to points so the page keeps its real physical size
+      const pw=cv.width*72/dpi, ph=cv.height*72/dpi;
+      const p=out.addPage([pw,ph]);
+      p.drawImage(img,{x:0,y:0,width:pw,height:ph});
+    }
+    return { bytes:await out.save(), ext:'.pdf' };
+  } finally { Promise.resolve(doc.destroy()).catch(()=>{}); }
+}
+
+$('#compressStop').onclick=()=>{ cmpAbort=true; $('#compressStatus').textContent=T('working'); };
+
+$('#compressGo').onclick=async()=>{
+  if(!cmpFiles.length) return;
+  cmpAbort=false;
+  busy($('#compressGo'),true); $('#compressStop').style.display='inline-flex';
+  $('#compressResult').className='result'; $('#compressResult').innerHTML='';
+  const q=parseFloat($('#compressQ').value)||0.75;
+  const maxDim=parseInt($('#compressMax').value,10)||0;
+  const dpi=parseInt($('#compressDpi').value,10)||150;
+  const raster=$('#compressMode').value==='raster';
+  try{
+    const results=[]; let before=0, after=0, skipped=0;
+    for(let i=0;i<cmpFiles.length;i++){
+      if(cmpAbort) throw fail('e_ocr_cancel');
+      const f=cmpFiles[i];
+      $('#compressStatus').textContent=T('cmpWorking')({done:i+1,total:cmpFiles.length,name:f.name});
+      cmpProgress(i/cmpFiles.length);
+      const isPdf=/\.pdf$/i.test(f.name);
+      const orig=new Uint8Array(await bytesOf(f));
+      let made;
+      try{
+        made = isPdf
+          ? (raster ? await cmpPdfRaster(orig, q, dpi) : await cmpPdfKeep(orig))
+          : await cmpImage(f, q, maxDim);
+      }catch(e){
+        if(e && e.code==='e_ocr_cancel') throw e;
+        made = null;                                   // unreadable: keep the original
+      }
+      const stem=f.name.replace(/\.[^.]+$/,'');
+      // never hand back something bigger than what came in
+      const useNew = made && made.bytes.length < orig.length;
+      if(!useNew) skipped++;
+      const bytes = useNew ? made.bytes : orig;
+      const ext   = useNew ? made.ext : (f.name.match(/\.[^.]+$/)||['.bin'])[0];
+      results.push({ name:stem+'_small'+ext, bytes, size:bytes.length });
+      before+=orig.length; after+=bytes.length;
+      cmpRenderList(results);
+      await new Promise(r=>setTimeout(r,0));
+    }
+    cmpProgress(1);
+    let blob, dlName;
+    if(results.length===1){
+      blob=new Blob([results[0].bytes],{type:/\.pdf$/i.test(results[0].name)?'application/pdf':'image/jpeg'});
+      dlName=results[0].name;
+    }else{
+      const zip=new JSZip();
+      results.forEach(r=>zip.file(r.name, r.bytes));
+      blob=await zip.generateAsync({type:'blob'});
+      dlName='compressed.zip';
+    }
+    showResult('#compressResult',true,T('okCmp'),
+      T('okCmpMeta')({files:results.length,before:fmtBytes(before),after:fmtBytes(after),
+                      pct:pctSaved(before,after),skipped}),
+      blob, dlName);
+    $('#compressStatus').textContent='';
+  }catch(e){
+    const cancelled = e && e.code==='e_ocr_cancel';
+    showResult('#compressResult',false,cancelled?T('ocrStopped'):T('errCmp'),msgOf(e));
+    $('#compressStatus').textContent='';
+  }finally{
+    cmpProgress(null);
+    $('#compressStop').style.display='none';
+    busy($('#compressGo'),false);
+  }
+};
+
+// ===== START OVER =====
+// Clears the state of whichever function is on screen. Note every file input is
+// blanked too: without that, picking the SAME file again fires no change event and
+// the page would look dead.
+function resetTab(tab){
+  const sec=$('#'+tab);
+  sec.querySelectorAll('input[type=file]').forEach(i=>i.value='');
+  sec.querySelectorAll('input[type=text]').forEach(i=>i.value='');
+  sec.querySelectorAll('.result').forEach(r=>{ r.className='result'; r.innerHTML=''; });
+  if(tab==='merge'){ wsClear(WS.merge); wsRender(WS.merge); }
+  if(tab==='split'){ wsClear(WS.split); wsRender(WS.split); $('#splitInfo').textContent='';
+    $('#splitGo').disabled=true; $('#splitEach').disabled=true; $('#splitCut').disabled=true; }
+  if(tab==='organize'){ wsClear(WS.organize); wsRender(WS.organize); }
+  if(tab==='convert'){ toPdfFiles=[]; $('#toPdfList').innerHTML=''; $('#toPdfGo').disabled=true;
+    fromFiles=[]; $('#fromPdfList').innerHTML=''; $('#fromInfo').textContent=''; $('#fromGo').disabled=true; }
+  if(tab==='compress'){
+    cmpAbort=true; cmpFiles=[];
+    $('#compressList').innerHTML=''; $('#compressStatus').textContent='';
+    $('#compressStop').style.display='none'; cmpProgress(null); cmpSync();
+  }
+  if(tab==='ocr'){
+    ocrAbort=true;                                // stops a run that is still going
+    ocrFile=null; ocrBytes=null;
+    $('#ocrInfo').textContent=''; $('#ocrStatus').textContent='';
+    $('#ocrGo').disabled=true; $('#ocrStop').style.display='none'; ocrProgress(null);
+  }
+  window.scrollTo(0,0);
+}
+$('#resetBtn').onclick=()=>resetTab(document.querySelector('.navitem.active').dataset.tab);
+
+
+applyStatic();
+</script>
+</body>
+</html>
